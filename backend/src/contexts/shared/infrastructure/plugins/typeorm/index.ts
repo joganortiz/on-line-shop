@@ -1,0 +1,1 @@
+export { TypeOrmClientFactory } from "./TypeOrmClientFactory";

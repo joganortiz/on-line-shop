@@ -1,0 +1,1 @@
+export { RoleGetterAllUseCase } from "./RoleGetterAll";

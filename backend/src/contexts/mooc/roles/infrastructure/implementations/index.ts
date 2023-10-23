@@ -1,0 +1,1 @@
+export { MySqlRoleRepository } from "./MySqlRoleRepository";
