@@ -1,33 +1,49 @@
 import { StringValueObject } from '@contexts/shared/domain/value-object';
-import { RoleNotFoundNameException } from '../exceptions/RoleNotFoundNameException';
-import { uuidValidate } from '@contexts/shared/domain/services/uuid';
+import { NameEmptyException } from '../exceptions/NameEmptyException';
+import { uuidValidate } from '@contexts/shared/domain/services/uuidValidate';
+import { DescriptionEmptyException } from '../exceptions/DescriptionEmptyException';
 
-export class RoleId {
-    readonly _value: string;
+export class RoleId extends uuidValidate {
     constructor(value: string) {
-        this._value = new uuidValidate(value)._value;
+        super(value)
     }
 }
 
 export class RoleName extends StringValueObject {
+    readonly _value: string;
     constructor(value: string) {
         super(value);
         this.isDefiniteValue();
         this.ensureMaxLength(50, 'name');
+
+        this._value = value;
     }
 
     private isDefiniteValue(): void {
         const isDefinite = this.ensureValueIsDefined();
 
         if (!isDefinite) {
-            throw new RoleNotFoundNameException();
+            throw new NameEmptyException();
         }
     }
 }
 
 export class RoleDescription extends StringValueObject {
+    readonly _value: string;
+
     constructor(value: string) {
         super(value);
+        this.isDefiniteValue();
+        this.ensureMaxLength(500, 'description');
+        this._value = value;
+    }
+
+    private isDefiniteValue(): void {
+        const isDefinite = this.ensureValueIsDefined();
+
+        if (!isDefinite) {
+            throw new DescriptionEmptyException();
+        }
     }
 }
 

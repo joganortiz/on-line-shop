@@ -19,7 +19,8 @@ export class RoleEntityMysql extends BaseEntity {
     name: string;
 
     @Column({
-        type: 'text',
+        type: 'varchar',
+        length: 500,
         nullable: false,
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci'

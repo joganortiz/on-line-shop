@@ -8,13 +8,13 @@ import {
 export interface PrimitiveRole {
     _id: string;
     name: string;
-    description?: string;
+    description: string;
     created?: Date;
 }
 
-export interface listDataValueObjectRole {
+export interface valueObject {
     _id: RoleId;
     name: RoleName;
-    description?: RoleDescription;
+    description: RoleDescription;
     created?: RoleCreated;
 }

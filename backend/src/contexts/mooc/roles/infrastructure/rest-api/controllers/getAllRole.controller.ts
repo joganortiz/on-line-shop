@@ -9,15 +9,15 @@ export default class GetAllRoleController {
         this._http = http;
     }
 
-    run = async (_req: Request, res: Response): Promise<void> => {
+    run = async (req: Request, res: Response): Promise<void> => {
         try {
             const useCaseRoleGetterAll = new RoleGetterAllUseCase(
                 getRoleRepository()
             )
 
-            const getAllRole = await useCaseRoleGetterAll.run();
+            const result = await useCaseRoleGetterAll.run(req.query);
 
-            this._http.success.run(res, this._http.status.OK, getAllRole)
+            this._http.success.run(res, this._http.status.OK, result)
         } catch (error: any) {
             const status = error.status ?? this._http.status.INTERNAL_SERVER_ERROR;
             this._http.error.run(res, status, error);

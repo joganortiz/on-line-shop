@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "NODE_ENV=development && nodemon --exec babel-node --extensions \".ts\" -r tsconfig-paths/register ./src/apps/start.ts",
     "build": "babel src --extensions \".ts\" --out-dir build --copy-files",
-    "typeorm:dev": "typeorm-ts-node-esm -d src/contexts/shared/infrastructure/persistence/typeorm/TypeOrmMigrations.ts",
+    "typeorm:dev": "typeorm-ts-node-esm -d src/contexts/shared/infrastructure/plugins/typeorm/TypeOrmMigrations.ts",
     "m:gen": "pnpm run typeorm:dev migration:generate -p",
     "m:run": "npm run typeorm:dev migration:run",
     "test": "jest",
@@ -56,7 +56,6 @@
     "express": "^4.18.2",
     "express-fileupload": "^1.4.1",
     "express-promise-router": "^4.1.1",
-    "express-useragent": "^1.0.15",
     "glob": "^10.3.10",
     "helmet": "^7.0.0",
     "http": "0.0.1-security",

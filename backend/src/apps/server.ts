@@ -9,13 +9,13 @@ import helmet from 'helmet';
 import compression from 'compression';
 import Router from 'express-promise-router';
 import errorHandler from 'errorhandler';
-import type * as http from 'http';
-import httpStatus from 'http-status';
+import type * as httpServer from 'http';
 import fileUpload from 'express-fileupload';
 
 import { registerRoutes } from './routers';
 
 import env from '@contexts/shared/infrastructure/config/env';
+import { http } from '@contexts/shared/infrastructure/plugins/http';
 
 const CORS_OPTIONS = {
 	origin: env.get('cors'),
@@ -25,7 +25,7 @@ const CORS_OPTIONS = {
 export class Server {
 	private readonly _express: express.Express;
 	private readonly _port: number;
-	private httpServer?: http.Server;
+	private httpServer?: httpServer.Server;
 
 	constructor(port: number) {
 		this._port = port;
@@ -56,8 +56,8 @@ export class Server {
 
 		this._express.use(
 			(_req: Request, res: Response, _next: NextFunction) => {
-				res.status(httpStatus.NOT_FOUND).json({
-					status: httpStatus.NOT_FOUND,
+				res.status(http.status.NOT_FOUND).json({
+					status: http.status.NOT_FOUND,
 					error: {
 						message: 'The path could not be found'
 					}
@@ -82,7 +82,7 @@ export class Server {
 		});
 	};
 
-	getHTTPServer = async (): Promise<http.Server | undefined> => {
+	getHTTPServer = async (): Promise<httpServer.Server | undefined> => {
 		return this.httpServer;
 	};
 

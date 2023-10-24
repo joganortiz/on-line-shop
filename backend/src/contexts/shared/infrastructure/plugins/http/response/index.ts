@@ -15,7 +15,7 @@ export class ErrorHttp implements ErrorHttp{
         status: number,
         data: any | string = ''
     ): void => {
-        // console.log(data);
+        console.log(data);
         let errorMsg = '';
 
         errorMsg =
