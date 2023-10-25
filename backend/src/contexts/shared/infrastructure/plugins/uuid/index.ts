@@ -1,0 +1,1 @@
+export { uuidValidate } from "./validateUuid";

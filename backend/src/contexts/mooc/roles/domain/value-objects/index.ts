@@ -1,9 +1,9 @@
 import { StringValueObject } from '@contexts/shared/domain/value-object';
 import { NameEmptyException } from '../exceptions/NameEmptyException';
-import { uuidValidate } from '@contexts/shared/domain/services/uuidValidate';
+import { uuidValid } from '@contexts/shared/domain/services/uuidValidate';
 import { DescriptionEmptyException } from '../exceptions/DescriptionEmptyException';
 
-export class RoleId extends uuidValidate {
+export class RoleId extends uuidValid {
     constructor(value: string) {
         super(value)
     }

@@ -3,12 +3,16 @@ import { status } from "./status";
 
 export interface http {
     status: status;
-    error:  ErrorHttp;
-    success: SuccessHttp;
+    response: {
+        error:  ErrorHttp;
+        success: SuccessHttp;
+    }
 }
 
 export const http = {
     status: status,
-    error:  ErrorHttp,
-    success: SuccessHttp
+    response: {
+        error:  ErrorHttp,
+        success: SuccessHttp
+    }
 }
