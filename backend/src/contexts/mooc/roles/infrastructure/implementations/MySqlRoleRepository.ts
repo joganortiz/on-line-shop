@@ -1,8 +1,9 @@
 import { RemovedType } from "@contexts/shared/domain/typeOrm";
 import { Role, RoleRepository } from "../../domain";
 import { RoleEntityMysql } from "../persistence/typeorm";
-import { RoleId } from "../../domain/value-objects";
+import { RoleId, RoleName } from "../../domain/value-objects";
 import { Nullable } from "@contexts/shared/domain/Nullable";
+import { Not } from "typeorm";
 
 export class MySqlRoleRepository implements RoleRepository {
 
@@ -78,4 +79,44 @@ export class MySqlRoleRepository implements RoleRepository {
 
         return Role.fromPrimitives(role);
     };
+
+    
+    /**
+     * @description insert a new role
+     * @date 10/25/2023 - 8:22:22 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(role: Role) => Promise<Role>}
+     */
+    save =async (role: Role): Promise<Role> => {
+        const prepareRole = new RoleEntityMysql();
+        prepareRole._id = role._id._value;
+        prepareRole.name = role.name._value;
+        prepareRole.description = role.description?._value;
+        const roleCreate = await prepareRole.save();
+
+        return Role.fromPrimitives(roleCreate);
+    }
+
+    
+    /**
+     * @description Gets a role by name
+     * @date 10/25/2023 - 8:26:56 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(name: RoleName, id: RoleId) => Promise<Nullable<Role>>}
+     */
+    getByName = async (name: RoleName, id: RoleId): Promise<Nullable<Role>> => {
+        const role = await RoleEntityMysql.findOne({
+            where: {
+                name: name._value,
+                removed: RemovedType.NOT_REMOVED,
+                _id: Not(id._value)
+            }
+        });
+
+        if (role === null) return null;
+
+        return Role.fromPrimitives(role);
+    }
 }

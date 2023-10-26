@@ -3,7 +3,7 @@ import { RoleGetterByIdUseCase } from "@contexts/mooc/roles/application";
 import { getRoleRepository } from "../../dependencies";
 import { http } from "@contexts/shared/infrastructure/plugins/http";
 
-export default class GetByIdRoleController {
+export class GetByIdRoleController {
     private readonly _http: http;
     constructor( http: http ) {
         this._http = http;

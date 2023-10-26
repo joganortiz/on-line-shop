@@ -2,7 +2,7 @@ import httpStatus from "http-status";
 
 export type status = {
     OK: 200,
-    CREATE: 201,
+    CREATED: 201,
     BAD_REQUEST: 400,
     UNAUTHORIZED: 401,
     NOT_FOUND: 404,
@@ -12,7 +12,7 @@ export type status = {
 
 export const status: status = {
     OK: httpStatus.OK, // 200
-    CREATE: httpStatus.CREATED, // 201
+    CREATED: httpStatus.CREATED, // 201
     BAD_REQUEST: httpStatus.BAD_REQUEST, // 400
     UNAUTHORIZED: httpStatus.UNAUTHORIZED, // 401
     NOT_FOUND: httpStatus.NOT_FOUND, // 404
