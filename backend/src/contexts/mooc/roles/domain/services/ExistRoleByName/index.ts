@@ -7,7 +7,7 @@ export class ExistRoleByName {
         this._roleRepository = roleRepository;
     }
 
-    async run(name: string, id: string): Promise<Boolean> {
+    async run(name: string, id: string): Promise<boolean> {
         const NameRole = new RoleName(name);
         const idRole = new RoleId(id);
         const existRole = await this._roleRepository.getByName(

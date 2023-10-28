@@ -1,1 +1,1 @@
-export { StringValueObject } from "./StringValueObject";
+export { StringValueObject } from './StringValueObject';

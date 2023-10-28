@@ -5,7 +5,7 @@ import { DescriptionEmptyException } from '../exceptions/DescriptionEmptyExcepti
 
 export class RoleId extends uuidValid {
     constructor(value: string) {
-        super(value)
+        super(value, 'id role');
     }
 }
 

@@ -15,10 +15,10 @@ module.exports = {
 			"module-resolver",
 			{
 				alias: {
-					"@Apps": "./src/Apps",
-					"@Contexts": "./src/Contexts",
-					"@Mooc": "./src/Contexts/Mooc",
-					"@Shared": "./src/Contexts/Shared"
+					"@apps": "./src/apps",
+					"@contexts": "./src/contexts",
+					"@mooc": "./src/contexts/mooc",
+					"@shared": "./src/contexts/shared"
 				}
 			}
 		],

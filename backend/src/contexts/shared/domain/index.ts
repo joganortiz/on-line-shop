@@ -1,1 +1,1 @@
-export { ModelRoot } from "./ModelRoot";
+export { ModelRoot } from './ModelRoot';

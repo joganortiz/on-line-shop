@@ -1,18 +1,11 @@
-import { ErrorHttp, SuccessHttp } from "./response";
-import { status } from "./status";
+import { type Http } from '@contexts/shared/domain/interfaces/http';
+import { errorHttp, successHttp } from './response';
+import { status } from './status';
 
-export interface http {
-    status: status;
+export const http: Http = {
+    status,
     response: {
-        error:  ErrorHttp;
-        success: SuccessHttp;
+        error: errorHttp,
+        success: successHttp
     }
-}
-
-export const http = {
-    status: status,
-    response: {
-        error:  ErrorHttp,
-        success: SuccessHttp
-    }
-}
+};

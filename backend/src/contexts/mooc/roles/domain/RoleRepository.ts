@@ -1,6 +1,6 @@
-import { Nullable } from '@contexts/shared/domain/Nullable';
+import { type Nullable } from '@contexts/shared/domain/Nullable';
 import { type Role } from './Role';
-import { RoleId, RoleName } from './value-objects';
+import { type RoleId, type RoleName } from './value-objects';
 
 export interface RoleRepository {
     /**
@@ -10,7 +10,10 @@ export interface RoleRepository {
      *
      * @type {(start?: number, limit?: number) => Promise<{ total: number; roles: {}; }>}
      */
-    getAll: (start?: number, limit?: number) => Promise<{total: number; roles: Role[]}>;
+    getAll: (
+        start?: number,
+        limit?: number
+    ) => Promise<{ total: number; roles: Role[] }>;
 
     /**
      * @description get the detail of a role by id
@@ -30,7 +33,24 @@ export interface RoleRepository {
      */
     save: (role: Role) => Promise<Role>;
 
-    
+    /**
+     * @description update role data by id
+     * @date 10/27/2023 - 11:10:11 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(role: Role) => Promise<boolean>}
+     */
+    update: (role: Role) => Promise<boolean>;
+
+    /**
+     * @description delete a role by id
+     * @date 10/27/2023 - 11:10:27 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(role: Role) => Promise<boolean>}
+     */
+    delete: (role: Role) => Promise<boolean>;
+
     /**
      * @description role by name
      * @date 10/25/2023 - 8:23:44 PM

@@ -1,4 +1,4 @@
-import { http } from "@contexts/shared/infrastructure/plugins/http";
+import { http } from '@contexts/shared/infrastructure/plugins/http';
 
 export class InvalidArgumentError {
     constructor(message: string, status?: number) {

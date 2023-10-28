@@ -1,1 +1,1 @@
-export { TypeOrmClientFactory } from "./TypeOrmClientFactory";
+export { TypeOrmClientFactory } from './TypeOrmClientFactory';

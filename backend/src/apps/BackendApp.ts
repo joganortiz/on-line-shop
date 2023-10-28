@@ -1,9 +1,8 @@
 import 'reflect-metadata';
 
-import env from '@contexts/shared/infrastructure/config/env';
-
 import { Server } from './server';
 import { TypeOrmClientFactory } from '@contexts/shared/infrastructure/plugins/typeorm';
+import env from '@contexts/shared/infrastructure/config/env';
 
 export class MoocBackendApp {
     server?: Server;
@@ -25,7 +24,7 @@ export class MoocBackendApp {
 
         await this.server.listen();
     };
-    
+
     /**
      * @description call the shutdown method of our project
      * @date 10/21/2023 - 10:11:07 PM
@@ -33,7 +32,7 @@ export class MoocBackendApp {
      *
      * @type {() => Promise<void>}
      */
-    stop = async(): Promise<void> => {
-        this.server?.stop();
+    stop = async (): Promise<void> => {
+        await this.server?.stop();
     };
 }

@@ -1,5 +1,5 @@
 import { validate } from 'uuid';
 
-export type uuidValidate = (value: string) => boolean;
+// export type uuidValidate = (value: string) => boolean;
 
-export const uuidValidate: uuidValidate = (value: string) => validate(value);
+export const uuidValidate = (value: string): boolean => validate(value);

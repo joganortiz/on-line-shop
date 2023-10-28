@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm';
+import path from 'path';
 
 import env from '../../config/env';
 
@@ -6,8 +7,9 @@ export class TypeOrmClientFactory {
     private readonly _appDataSource: DataSource;
     constructor() {
         const DATABASE: string = env.get('dataBase').toLowerCase();
+        const PRODUCTION: string = env.get('env').toLowerCase();
         this._appDataSource = new DataSource({
-            type: "mysql",
+            type: 'mysql',
             host: env.get('credentialMYSQL.host'),
             port: env.get('credentialMYSQL.port'),
             username: env.get('credentialMYSQL.username'),
@@ -17,17 +19,26 @@ export class TypeOrmClientFactory {
             synchronize: false,
             logging: false,
             entities: [
-                `${__dirname}/../../../../mooc/**/**/infrastructure/persistence/typeorm/*.${DATABASE}.ts`
+                path.join(
+                    __dirname,
+                    `/../../../../mooc/**/**/infrastructure/persistence/typeorm/*.${DATABASE}.ts`
+                )
             ],
             subscribers: [],
-            migrations: [
-                `${__dirname}/../../../../../../database/migrations/${DATABASE}/*.ts`
-            ],
+            migrations:
+                PRODUCTION !== 'production'
+                    ? [
+                          path.join(
+                              __dirname,
+                              `/../../../../../../database/migrations/${DATABASE}/*.ts`
+                          )
+                      ]
+                    : undefined,
             migrationsTableName: 'migrations',
-            connectorPackage: "mysql2"
+            connectorPackage: 'mysql2'
         });
     }
-    
+
     /**
      * @description function DataSource
      * @date 10/21/2023 - 10:43:43 PM
@@ -39,7 +50,7 @@ export class TypeOrmClientFactory {
     public dataSource = (): DataSource => {
         return this._appDataSource;
     };
-    
+
     /**
      * @description initialize the connection and if everything went well in the connection
      * @date 10/21/2023 - 10:43:29 PM

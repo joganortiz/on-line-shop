@@ -1,8 +1,8 @@
 import { MoocBackendApp } from '@apps/BackendApp';
 
 try {
-	// start project
-	new MoocBackendApp().start();
+    // start project
+    new MoocBackendApp().start();
 } catch (error) {
-	console.log(error);
+    console.log(error);
 }

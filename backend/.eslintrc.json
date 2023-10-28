@@ -4,7 +4,7 @@
         "es2021": true
     },
     "extends": [
-       //"standard-with-typescript",
+        "standard-with-typescript",
         "plugin:prettier/recommended",
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended"
@@ -21,14 +21,10 @@
         "prettier"
     ],
     "rules": {
-        // "indent": [
+        // "linebreak-style": [
         //     "error",
-        //     "tab"
+        //     "windows"
         // ],
-        "linebreak-style": [
-            "error",
-            "windows"
-        ],
         "quotes": [
             "error",
             "single"
@@ -37,33 +33,9 @@
             "error",
             "always"
         ],
-        // "import/no-unresolved": [
-        //     "error",
-        //     {
-        //         "plugins": [
-        //             "module-resolve",
-        //             {
-        //                 "alias": {
-        //                     "@apps": "./src/Apps/",
-        //                     "@contexts": "./src/contexts/",
-        //                     "@mooc": "./src/contexts/mooc/",
-        //                     "@shared": "./src/contexts/shared/"
-        //                 }
-        //             }
-        //         ]
-        //     }
-        // ]
-        // "import/no-unresolved": [
-        //     2, 
-        //     { "caseSensitive": false }
-        //  ]
-    },
-    "settings": {
-        "import/resolver": {
-          "node": {
-            "extensions": [".ts"],
-            "moduleDirectory": ["node_modules", "src/"]
-          }
-        }
-      }
+        "@typescript-eslint/no-throw-literal": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-extraneous-class": "off", 
+        "@typescript-eslint/no-explicit-any": "off"
+    }
 }

@@ -1,1 +1,1 @@
-export { RoleEntityMysql } from "./RoleEntity.mysql";
+export { RoleEntityMysql } from './RoleEntity.mysql';
