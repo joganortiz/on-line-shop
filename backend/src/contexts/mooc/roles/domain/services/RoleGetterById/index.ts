@@ -3,7 +3,7 @@ import { type RoleRepository } from '../../RoleRepository';
 import { RoleNotFoundException } from '../../exceptions/RoleNotFoundException';
 import { RoleId } from '../../value-objects';
 
-export class UserGetterById {
+export class RoleGetterById {
     private readonly _roleRepository: RoleRepository;
     constructor(roleRepository: RoleRepository) {
         this._roleRepository = roleRepository;

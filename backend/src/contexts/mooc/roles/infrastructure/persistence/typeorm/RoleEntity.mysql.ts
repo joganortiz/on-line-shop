@@ -1,9 +1,11 @@
+import { PermissionRoleEntityMysql } from '../../../../permission/infrastructure/persistence/typeorm/PermissionEntity.mysql';
 import { RemovedType } from '../../../../../shared/domain/typeOrm';
 import {
     BaseEntity,
     Column,
     CreateDateColumn,
     Entity,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm';
@@ -42,6 +44,9 @@ export class RoleEntityMysql extends BaseEntity {
         comment: '0->removed 1->Not removed'
     })
     removed: RemovedType;
+
+    @OneToMany(() => PermissionRoleEntityMysql, (permission) => permission.role)
+    permission: PermissionRoleEntityMysql[];
 
     @CreateDateColumn({
         name: 'created_at',

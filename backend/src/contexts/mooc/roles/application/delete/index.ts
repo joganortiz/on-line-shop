@@ -2,14 +2,14 @@ import { type RoleRepository } from '../../domain';
 import { AdministratorNotDeleteException } from '../../domain/exceptions/AdministratorNotDeleteException';
 import { RoleCouldNotBeDeletedeException } from '../../domain/exceptions/RoleCouldNotBeDeletedeException';
 import { type PrimitiveRole } from '../../domain/interfaces';
-import { UserGetterById } from '../../domain/services/UserGetterById';
+import { RoleGetterById } from '../../domain/services/RoleGetterById';
 
 export class RoleDeleteUseCase {
     private readonly _roleRepository: RoleRepository;
-    private readonly _roleGetterById: UserGetterById;
+    private readonly _roleGetterById: RoleGetterById;
     constructor(roleRepository: RoleRepository) {
         this._roleRepository = roleRepository;
-        this._roleGetterById = new UserGetterById(roleRepository);
+        this._roleGetterById = new RoleGetterById(roleRepository);
     }
 
     run = async (id: string): Promise<PrimitiveRole> => {
