@@ -7,7 +7,7 @@ import {
 
 export const errorHttp: ErrorHttp = {
     run: (res: Response, status: number, data: any | string = ''): void => {
-        // console.log(data);
+        console.log(data);
         let errorMsg = '';
 
         errorMsg =

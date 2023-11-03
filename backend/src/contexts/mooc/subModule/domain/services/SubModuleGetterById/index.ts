@@ -3,7 +3,7 @@ import { type SubModuleRepository } from '../../SubModuleRepository';
 import { SubModuleNotFoundException } from '../../exceptions/SubModuleNotFoundException';
 import { SubModuleId } from '../../value-objects';
 
-export class ExistSubModuleById {
+export class SubModuleGetterById {
     private readonly _subModuleRepository: SubModuleRepository;
     constructor(roleRepository: SubModuleRepository) {
         this._subModuleRepository = roleRepository;

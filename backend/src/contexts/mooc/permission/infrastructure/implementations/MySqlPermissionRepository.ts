@@ -3,6 +3,8 @@ import { Permission } from '../../domain/Permission';
 import { type PermissionRoleRepository } from '../../domain/PermissionRoleRepository';
 import { PermissionRoleEntityMysql } from '../persistence/typeorm';
 import { StatusType } from '@src/contexts/shared/domain/typeOrm';
+import { SubModuleEntityMysql } from '@src/contexts/mooc/subModule/infrastructure/persistence/typeorm';
+import { RoleEntityMysql } from '@src/contexts/mooc/roles/infrastructure/persistence/typeorm';
 
 export class MySqlPermissionRoleRepository implements PermissionRoleRepository {
     getAllRolePermission = async (id: RoleId): Promise<Permission[]> => {
@@ -26,8 +28,6 @@ export class MySqlPermissionRoleRepository implements PermissionRoleRepository {
                 }
             }
         });
-
-        console.log(items);
 
         const permission = items.map((item) => {
             return Permission.fromPrimitives(item);
@@ -56,8 +56,15 @@ export class MySqlPermissionRoleRepository implements PermissionRoleRepository {
                 ? StatusType.ACTIVE
                 : StatusType.INACTIVE;
 
-        preparePermission.subModule._id = permission.subModule._id._value;
-        preparePermission.role._id = permission.role._id._value;
+        const prepareSubModule = new SubModuleEntityMysql();
+        prepareSubModule._id = permission.subModule._id._value;
+
+        preparePermission.subModule = prepareSubModule;
+
+        const prepareRole = new RoleEntityMysql();
+        prepareRole._id = permission.role._id._value;
+
+        preparePermission.role = prepareRole;
 
         await preparePermission.save();
         return true;

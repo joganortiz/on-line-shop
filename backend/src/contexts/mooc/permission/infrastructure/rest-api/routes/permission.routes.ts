@@ -1,6 +1,7 @@
 import { type Request, type Response, type Router } from 'express';
 import GetAllRolePermissionController from '../controllers/getAllRolePermission.controller';
 import { http } from '@src/contexts/shared/infrastructure/plugins/http';
+import UpdateRolePermissionController from '../controllers/updateRolePermission.controller';
 
 const PATH_RUTE = 'permision';
 export const register = (router: Router): void => {
@@ -19,11 +20,15 @@ export const register = (router: Router): void => {
         }
     );
 
-    // router.put(`/${PATH_RUTE}/role/:id`, (req: Request, res: Response) => {
-    //     try {
-    //         new UpdateRolePermissionController().run(req, res);
-    //     } catch (error) {
-    //         ErrorHttp.run(res, httpStatus.INTERNAL_SERVER_ERROR, error);
-    //     }
-    // });
+    router.put(`/${PATH_RUTE}/role/:id`, (req: Request, res: Response) => {
+        try {
+            new UpdateRolePermissionController(http).run(req, res);
+        } catch (error) {
+            http.response.error.run(
+                res,
+                http.status.INTERNAL_SERVER_ERROR,
+                error
+            );
+        }
+    });
 };

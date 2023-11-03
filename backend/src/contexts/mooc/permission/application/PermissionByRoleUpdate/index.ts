@@ -1,27 +1,26 @@
-import { Permission } from '@Contexts/Mooc/permission/domain/Permission/Permission';
-import { type PermissionRepository } from '@Contexts/Mooc/permission/domain/Permission/PermissionRepository';
-import { type SubModule } from '@Contexts/Mooc/permission/domain/SubModule/SubModule';
-import { type SubModuleRepository } from '@Contexts/Mooc/permission/domain/SubModule/SubModuleRepository';
-import { ExistSubModuleById } from '@Contexts/Mooc/permission/domain/SubModule/services/ExistSubModuleById';
-import { type RoleRepository } from '@Contexts/Mooc/roles/domain/RoleRepository';
-import { ExistRoleById } from '@Contexts/Mooc/roles/domain/services/ExistRoleById';
-import { type UuidV4Repository } from '@Contexts/Mooc/shared/domain/uuidV4Repository';
-import { type CommandCaseOfUse } from '@Contexts/Shared/domain/CommandCaseOfUse';
+import { SubModuleGetterById } from '@src/contexts/mooc/subModule/domain/services/SubModuleGetterById';
+import { type PermissionRoleRepository } from '../../domain/PermissionRoleRepository';
+import { RoleGetterById } from '@src/contexts/mooc/roles/domain/services/RoleGetterById';
+import { type SubModuleRepository } from '@src/contexts/mooc/subModule/domain/SubModuleRepository';
+import { type RoleRepository } from '@src/contexts/mooc/roles/domain';
+import { type UuidRepository } from '@src/contexts/shared/domain/plugins/UuidRepository';
+import { type SubModule } from '@src/contexts/mooc/subModule/domain/SubModule';
+import { Permission } from '../../domain/Permission';
 
-export class PermissionByRoleUpdate implements CommandCaseOfUse<void> {
-    private readonly _permissionRepository: PermissionRepository;
-    private readonly _existSubModuleById: ExistSubModuleById;
-    private readonly _existRoleById: ExistRoleById;
-    private readonly _uuidGenerator: UuidV4Repository;
+export class PermissionByRoleUpdate {
+    private readonly _permissionRepository: PermissionRoleRepository;
+    private readonly _existSubModuleById: SubModuleGetterById;
+    private readonly _existRoleById: RoleGetterById;
+    private readonly _uuidGenerator: UuidRepository;
     constructor(
-        permissionRepository: PermissionRepository,
+        permissionRepository: PermissionRoleRepository,
         subModuleRepository: SubModuleRepository,
         roleRepository: RoleRepository,
-        uuidGenerator: UuidV4Repository
+        uuidGenerator: UuidRepository
     ) {
         this._permissionRepository = permissionRepository;
-        this._existSubModuleById = new ExistSubModuleById(subModuleRepository);
-        this._existRoleById = new ExistRoleById(roleRepository);
+        this._existSubModuleById = new SubModuleGetterById(subModuleRepository);
+        this._existRoleById = new RoleGetterById(roleRepository);
         this._uuidGenerator = uuidGenerator;
     }
 
@@ -45,7 +44,7 @@ export class PermissionByRoleUpdate implements CommandCaseOfUse<void> {
         }
 
         // eliminar los permisos de ese rol
-        this._permissionRepository.deleteRolePermission(role.id);
+        this._permissionRepository.deleteRolePermission(role._id);
 
         // recorremos los nuevos permisos
         for (let index = 0; index < listSubModule.length; index++) {
@@ -58,11 +57,12 @@ export class PermissionByRoleUpdate implements CommandCaseOfUse<void> {
                 update: crud.update,
                 delete: crud.delete,
                 role: {
-                    _id: role.id._value,
-                    name: role.name._value
+                    _id: role._id._value,
+                    name: role.name._value,
+                    description: role.description._value
                 },
                 subModule: {
-                    _id: subModule.id._value,
+                    _id: subModule._id._value,
                     title: subModule.title._value,
                     order: subModule.order._value,
                     url: subModule.url._value

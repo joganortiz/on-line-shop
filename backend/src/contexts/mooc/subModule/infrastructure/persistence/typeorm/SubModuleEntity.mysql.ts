@@ -18,7 +18,7 @@ import {
 })
 export class SubModuleEntityMysql extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
-    _id: string;
+    public _id: string;
 
     @ManyToOne(() => ModuleEntityMysql, (module) => module.subModule, {
         onUpdate: 'CASCADE',
@@ -44,7 +44,7 @@ export class SubModuleEntityMysql extends BaseEntity {
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci'
     })
-    title: string;
+    public title: string;
 
     @Column({
         type: 'int',
