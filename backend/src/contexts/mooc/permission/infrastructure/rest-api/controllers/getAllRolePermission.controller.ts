@@ -5,7 +5,7 @@ import { getPermissionRepository } from '../../dependencies';
 import { getSubModuleRepository } from '@src/contexts/mooc/subModule/infrastructure/dependencies';
 import { getRoleRepository } from '@src/contexts/mooc/roles/infrastructure/dependencies';
 
-export default class GetAllRolePermissionController {
+export class GetAllRolePermissionController {
     private readonly _http: Http;
     constructor(http: Http) {
         this._http = http;

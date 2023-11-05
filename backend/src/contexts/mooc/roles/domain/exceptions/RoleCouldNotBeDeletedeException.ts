@@ -3,6 +3,6 @@ import { http } from '@contexts/shared/infrastructure/plugins/http';
 
 export class RoleCouldNotBeDeletedeException extends InvalidArgumentError {
     constructor() {
-        super('Could not delete role', http.status.NOT_FOUND);
+        super('Could not delete role', http.status.BAD_REQUEST);
     }
 }

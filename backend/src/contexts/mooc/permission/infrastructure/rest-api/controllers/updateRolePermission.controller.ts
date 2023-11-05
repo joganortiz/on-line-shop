@@ -9,7 +9,7 @@ import { getRoleRepository } from '@src/contexts/mooc/roles/infrastructure/depen
 import { UuidV4 } from '@src/contexts/shared/infrastructure/implementations/Uuid';
 import { type Http } from '@src/contexts/shared/domain/interfaces/http';
 
-export default class UpdateRolePermissionController {
+export class UpdateRolePermissionController {
     private readonly _http: Http;
     constructor(http: Http) {
         this._http = http;

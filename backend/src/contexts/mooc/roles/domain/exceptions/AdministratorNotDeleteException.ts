@@ -3,6 +3,6 @@ import { http } from '@contexts/shared/infrastructure/plugins/http';
 
 export class AdministratorNotDeleteException extends InvalidArgumentError {
     constructor() {
-        super('Cannot delete parent role', http.status.NOT_FOUND);
+        super('Cannot delete parent role', http.status.BAD_REQUEST);
     }
 }

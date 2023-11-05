@@ -1,7 +1,9 @@
 import { type Request, type Response, type Router } from 'express';
-import GetAllRolePermissionController from '../controllers/getAllRolePermission.controller';
 import { http } from '@src/contexts/shared/infrastructure/plugins/http';
-import UpdateRolePermissionController from '../controllers/updateRolePermission.controller';
+import {
+    GetAllRolePermissionController,
+    UpdateRolePermissionController
+} from '../controllers';
 
 const PATH_RUTE = 'permision';
 export const register = (router: Router): void => {

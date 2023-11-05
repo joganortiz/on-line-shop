@@ -3,6 +3,9 @@ import { InvalidArgumentError } from '@contexts/shared/domain/exceptions/Invalid
 
 export class ExistByNameException extends InvalidArgumentError {
     constructor() {
-        super('The role already exists in the system.', http.status.NOT_FOUND);
+        super(
+            'The role already exists in the system.',
+            http.status.BAD_REQUEST
+        );
     }
 }

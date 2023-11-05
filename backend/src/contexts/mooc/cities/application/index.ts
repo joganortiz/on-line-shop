@@ -1,0 +1,1 @@
+export { CityGetterAllUseCase } from './CityGtterAll';
