@@ -1,1 +1,1 @@
-export { CountryGetterById } from './CountryGtterById';
+export { CountryGetterById } from './CountryGetterById';

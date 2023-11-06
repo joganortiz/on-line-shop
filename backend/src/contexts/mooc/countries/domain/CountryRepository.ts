@@ -5,12 +5,18 @@ import { type Country } from './Country';
 export interface CountryRepository {
     /**
      * @description list all countries
-     * @date 11/4/2023 - 11:17:44 PM
+     * @date 11/5/2023 - 9:19:26 PM
      * @author Jogan Ortiz Muñoz
      *
-     * @type {(start?: number, limit?: number) => Promise<Country[]>}
+     * @type {(
+     *         start?: number,
+     *         limit?: number
+     *     ) => Promise<{ total: number; countries: Country[] }>}
      */
-    getAll: (start?: number, limit?: number) => Promise<Country[]>;
+    getAll: (
+        start?: number,
+        limit?: number
+    ) => Promise<{ total: number; countries: Country[] }>;
 
     /**
      * @description list by id country

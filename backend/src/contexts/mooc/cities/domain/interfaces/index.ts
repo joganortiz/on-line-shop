@@ -7,13 +7,13 @@ import { type Country } from '@src/contexts/mooc/countries/domain/Country';
 export interface PrimitiveCity {
     _id: string;
     name: string;
-    country: PrimitiveCountry;
-    state: PrimitiveState;
+    country?: PrimitiveCountry;
+    state?: PrimitiveState;
 }
 
 export interface valueObject {
     _id: CityId;
     name: CityName;
-    state: State;
-    country: Country;
+    state?: State;
+    country?: Country;
 }

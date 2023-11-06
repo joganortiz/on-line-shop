@@ -9,9 +9,16 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
+    ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm';
+
+import { CountryEntityMysql } from '../../../../countries/infrastructure/persistence/typeorm';
+import { StateEntityMysql } from '../../../../states/infrastructure/persistence/typeorm';
+import { CityEntityMysql } from '../../../../cities/infrastructure/persistence/typeorm';
+import { RoleEntityMysql } from '../../../../roles/infrastructure/persistence/typeorm';
 
 @Entity({
     name: 'users',
@@ -58,7 +65,7 @@ export class UserEntityMysql extends BaseEntity {
         collation: 'utf8mb4_general_ci',
         default: () => 'NULL'
     })
-    identity: string;
+    identity?: string;
 
     @Column({
         type: 'varchar',
@@ -80,6 +87,39 @@ export class UserEntityMysql extends BaseEntity {
     })
     password: string;
 
+    @ManyToOne(() => CountryEntityMysql, (country) => country.user, {
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
+        nullable: true
+    })
+    @JoinColumn({
+        name: 'country_id',
+        foreignKeyConstraintName: 'FK_user_country_id'
+    })
+    country: CountryEntityMysql;
+
+    @ManyToOne(() => StateEntityMysql, (state) => state.user, {
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
+        nullable: true
+    })
+    @JoinColumn({
+        name: 'state_id',
+        foreignKeyConstraintName: 'FK_user_state_id'
+    })
+    state: StateEntityMysql;
+
+    @ManyToOne(() => CityEntityMysql, (city) => city.user, {
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
+        nullable: true
+    })
+    @JoinColumn({
+        name: 'city_id',
+        foreignKeyConstraintName: 'FK_user_city_id'
+    })
+    city: CityEntityMysql;
+
     @Column({
         type: 'varchar',
         length: 55,
@@ -88,7 +128,7 @@ export class UserEntityMysql extends BaseEntity {
         collation: 'utf8mb4_general_ci',
         default: () => 'NULL'
     })
-    address: string;
+    address?: string;
 
     @Column({
         type: 'varchar',
@@ -99,14 +139,14 @@ export class UserEntityMysql extends BaseEntity {
         select: false,
         default: () => 'NULL'
     })
-    token: string;
+    token?: string;
 
     @Column({
         type: 'tinyint',
         name: 'failed_attempts',
         nullable: false,
         select: false,
-        default: () => '1'
+        default: 0
     })
     failedAttempts: number;
 
@@ -128,7 +168,7 @@ export class UserEntityMysql extends BaseEntity {
         select: false,
         default: () => 'NULL'
     })
-    dateLocked: Date;
+    dateLocked?: Date;
 
     @Column({
         type: 'varchar',
@@ -138,18 +178,29 @@ export class UserEntityMysql extends BaseEntity {
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci'
     })
-    phone: string;
+    phone?: string;
 
     @Column({
         type: 'varchar',
         name: 'code_phone',
-        length: 5,
+        length: 20,
         nullable: true,
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci',
         default: () => 'NULL'
     })
-    codePhone: string;
+    codePhone?: string;
+
+    @ManyToOne(() => RoleEntityMysql, (role) => role.user, {
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
+        nullable: false
+    })
+    @JoinColumn({
+        name: 'role_id',
+        foreignKeyConstraintName: 'FK_user_role_id'
+    })
+    role: RoleEntityMysql;
 
     @Column({
         type: 'enum',
@@ -172,24 +223,23 @@ export class UserEntityMysql extends BaseEntity {
 
     @Column({
         type: 'varchar',
-        name: 'path_photo',
+        name: 'profile_picture',
         length: 255,
         nullable: true,
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci',
         default: () => 'NULL'
     })
-    profile: string;
+    profilePicture?: string;
 
     @CreateDateColumn({
         name: 'created_at',
         type: 'timestamp',
         precision: 0,
         nullable: true,
-        select: true,
         default: () => 'CURRENT_TIMESTAMP'
     })
-    created?: Date;
+    created: Date;
 
     @UpdateDateColumn({
         name: 'updated_at',

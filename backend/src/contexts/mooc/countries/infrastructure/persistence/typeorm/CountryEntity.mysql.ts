@@ -10,6 +10,7 @@ import {
 
 import { StateEntityMysql } from '../../../../states/infrastructure/persistence/typeorm';
 import { CityEntityMysql } from '../../.././../cities/infrastructure/persistence/typeorm';
+import { UserEntityMysql } from '../../.././../users/infrastructure/persistence/typeorm';
 
 @Entity({
     name: 'countries',
@@ -112,6 +113,9 @@ export class CountryEntityMysql extends BaseEntity {
 
     @OneToMany(() => CityEntityMysql, (city) => city.country)
     city: CityEntityMysql[];
+
+    @OneToMany(() => UserEntityMysql, (user) => user.country)
+    user: UserEntityMysql[];
 
     @CreateDateColumn({
         name: 'created_at',

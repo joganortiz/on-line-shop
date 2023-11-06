@@ -25,22 +25,22 @@ export class StateGetterAllByIdCountryUseCase {
             start?: string;
             limit?: string;
         }
-    ): Promise<PrimitiveState[]> => {
+    ): Promise<{ total: number; data: PrimitiveState[] }> => {
         start = start ?? '0';
         limit = limit ?? '0';
 
         const country = await this._countryGetterById.run(idCountry);
 
-        const result: State[] = await this._stateRepository.getAllByIdCountry(
+        const result = await this._stateRepository.getAllByIdCountry(
             country._id,
             parseInt(start) ?? 0,
             parseInt(limit) ?? 0
         ); // result states by id country
 
-        const resultDataPrimitives = result.map((state: State) =>
+        const resultDataPrimitives = result.states.map((state: State) =>
             state.toPrimitives()
         );
 
-        return resultDataPrimitives;
+        return { total: result.total, data: resultDataPrimitives };
     };
 }

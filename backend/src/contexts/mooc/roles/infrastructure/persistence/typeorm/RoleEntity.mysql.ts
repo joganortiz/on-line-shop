@@ -1,5 +1,3 @@
-import { PermissionRoleEntityMysql } from '../../../../permission/infrastructure/persistence/typeorm/PermissionEntity.mysql';
-import { RemovedType } from '../../../../../shared/domain/typeOrm';
 import {
     BaseEntity,
     Column,
@@ -9,6 +7,9 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm';
+import { PermissionRoleEntityMysql } from '../../../../permission/infrastructure/persistence/typeorm/PermissionEntity.mysql';
+import { RemovedType } from '../../../../../shared/domain/typeOrm';
+import { UserEntityMysql } from '../../../../users/infrastructure/persistence/typeorm';
 
 @Entity({
     name: 'roles',
@@ -47,6 +48,9 @@ export class RoleEntityMysql extends BaseEntity {
 
     @OneToMany(() => PermissionRoleEntityMysql, (permission) => permission.role)
     permission: PermissionRoleEntityMysql[];
+
+    @OneToMany(() => UserEntityMysql, (user) => user.role)
+    user: PermissionRoleEntityMysql[];
 
     @CreateDateColumn({
         name: 'created_at',

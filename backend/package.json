@@ -9,7 +9,8 @@
     "build": "rimraf ./build && babel src --extensions \".ts\" --out-dir build --copy-files",
     "typeorm:dev": "typeorm-ts-node-esm -d src/contexts/shared/infrastructure/plugins/typeorm/TypeOrmMigrations.ts",
     "m:gen": "pnpm run typeorm:dev migration:generate -p",
-    "m:run": "npm run typeorm:dev migration:run",
+    "m:run": "pnpm run typeorm:dev migration:run",
+    "m:drop": "pnpm run typeorm:dev schema:drop",
     "tests": "jest --verbose --silent --detectOpenHandles",
     "lint": "eslint --fix ./src"
   },

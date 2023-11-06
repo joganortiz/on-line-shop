@@ -5,12 +5,14 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm';
 
 import { CountryEntityMysql } from '../../.././../countries/infrastructure/persistence/typeorm';
 import { StateEntityMysql } from '../../.././../states/infrastructure/persistence/typeorm';
+import { UserEntityMysql } from '../../.././../users/infrastructure/persistence/typeorm';
 
 @Entity({
     name: 'cities',
@@ -49,6 +51,9 @@ export class CityEntityMysql extends BaseEntity {
         foreignKeyConstraintName: 'FK_cities_country_id'
     })
     country: CountryEntityMysql;
+
+    @OneToMany(() => UserEntityMysql, (user) => user.city)
+    user: UserEntityMysql[];
 
     @CreateDateColumn({
         name: 'created_at',

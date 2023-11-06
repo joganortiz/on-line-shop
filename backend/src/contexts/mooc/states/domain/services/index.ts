@@ -1,0 +1,1 @@
+export { StateGetterById } from './StateGetterById';

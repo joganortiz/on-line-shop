@@ -14,9 +14,9 @@ export class MySqlStateRepository implements StateRepository {
      * @type {(start?: number, limit?: number) => Promise<{}>}
      */
     getAll = async (
-        start?: number | undefined,
+        start?: number,
         limit?: number
-    ): Promise<State[]> => {
+    ): Promise<{ total: number; states: State[] }> => {
         const limitQuery: { skip?: number; take?: number } = {
             skip: undefined,
             take: undefined
@@ -37,11 +37,13 @@ export class MySqlStateRepository implements StateRepository {
             ...limitQuery
         });
 
+        const total = await StateEntityMysql.count();
+
         const states = items.map((item) => {
             return State.fromPrimitives(item);
         });
 
-        return states;
+        return { total, states };
     };
 
     /**
@@ -77,7 +79,7 @@ export class MySqlStateRepository implements StateRepository {
         idCountry: CountryId,
         start?: number,
         limit?: number
-    ): Promise<State[]> => {
+    ): Promise<{ total: number; states: State[] }> => {
         const limitQuery: { skip?: number; take?: number } = {
             skip: undefined,
             take: undefined
@@ -103,10 +105,18 @@ export class MySqlStateRepository implements StateRepository {
             ...limitQuery
         });
 
+        const total = await StateEntityMysql.count({
+            where: {
+                country: {
+                    _id: idCountry._value
+                }
+            }
+        });
+
         const states = items.map((item) => {
             return State.fromPrimitives(item);
         });
 
-        return states;
+        return { total, states };
     };
 }

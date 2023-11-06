@@ -14,19 +14,19 @@ export class CountryGetterAllUseCase {
     }: {
         start?: string;
         limit?: string;
-    }): Promise<PrimitiveCountry[]> => {
+    }): Promise<{ total: number; data: PrimitiveCountry[] }> => {
         start = start ?? '0';
         limit = limit ?? '0';
 
-        const result: Country[] = await this._countryRepository.getAll(
+        const result = await this._countryRepository.getAll(
             parseInt(start) ?? 0,
             parseInt(limit) ?? 0
         ); // result Countries
 
-        const resultDataPrimitives = result.map((country: Country) =>
+        const resultDataPrimitives = result.countries.map((country: Country) =>
             country.toPrimitives()
         );
 
-        return resultDataPrimitives;
+        return { total: result.total, data: resultDataPrimitives };
     };
 }

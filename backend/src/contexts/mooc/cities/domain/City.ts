@@ -7,8 +7,8 @@ import { CityId, CityName } from './value-objects';
 export class City extends ModelRoot<PrimitiveCity> {
     private readonly _id: CityId;
     private readonly name: CityName;
-    private readonly country: Country;
-    private readonly state: State;
+    private readonly country?: Country;
+    private readonly state?: State;
 
     constructor(dataClass: valueObject) {
         super();
@@ -22,8 +22,12 @@ export class City extends ModelRoot<PrimitiveCity> {
         return new City({
             _id: new CityId(_id),
             name: new CityName(name),
-            state: State.fromPrimitives(state),
-            country: Country.fromPrimitives(country)
+            state:
+                state !== undefined ? State.fromPrimitives(state) : undefined,
+            country:
+                country !== undefined
+                    ? Country.fromPrimitives(country)
+                    : undefined
         });
     }
 
@@ -31,8 +35,8 @@ export class City extends ModelRoot<PrimitiveCity> {
         return {
             _id: this._id._value,
             name: this.name._value,
-            country: this.country.toPrimitives(),
-            state: this.state.toPrimitives()
+            state: this.state?.toPrimitives(),
+            country: this.country?.toPrimitives()
         };
     }
 }

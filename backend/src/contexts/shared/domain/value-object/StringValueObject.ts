@@ -27,6 +27,14 @@ export abstract class StringValueObject {
         return true;
     };
 
+    protected convertValueToUndefined = (): string | undefined => {
+        if (this._valueString === null || this._valueString === undefined) {
+            return undefined;
+        }
+
+        return this._valueString;
+    };
+
     /**
      * @description Function that validates if the value is null and converts it to empty
      * @date 10/23/2023 - 8:29:54 PM

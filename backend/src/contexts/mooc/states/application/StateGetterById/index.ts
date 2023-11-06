@@ -13,7 +13,7 @@ export class StateGetterByIdUseCase {
     run = async (id: string): Promise<PrimitiveState> => {
         const result: State | null = await this._stateRepository.getById(
             new StateId(id)
-        ); // result Countries
+        ); // result state
 
         if (result === null) {
             throw new StateNotFoundException();

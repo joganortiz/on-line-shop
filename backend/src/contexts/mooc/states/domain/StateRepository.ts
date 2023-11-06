@@ -6,12 +6,18 @@ import { type StateId } from './value-objects';
 export interface StateRepository {
     /**
      * @description list all states
-     * @date 11/5/2023 - 12:15:51 AM
+     * @date 11/5/2023 - 9:17:28 PM
      * @author Jogan Ortiz Muñoz
      *
-     * @type {(start?: number, limit?: number) => Promise<State[]>}
+     * @type {(
+     *         start?: number,
+     *         limit?: number
+     *     ) => Promise<{ total: number; states: State[] }>}
      */
-    getAll: (start?: number, limit?: number) => Promise<State[]>;
+    getAll: (
+        start?: number,
+        limit?: number
+    ) => Promise<{ total: number; states: State[] }>;
 
     /**
      * @description list By Id State
@@ -24,18 +30,18 @@ export interface StateRepository {
 
     /**
      * @description list all states by id Country
-     * @date 11/5/2023 - 12:41:30 AM
+     * @date 11/5/2023 - 9:17:39 PM
      * @author Jogan Ortiz Muñoz
      *
      * @type {(
      *         idCountry: CountryId,
      *         start?: number,
      *         limit?: number
-     *     ) => Promise<State[]>}
+     *     ) => Promise<{ total: number; states: State[] }>}
      */
     getAllByIdCountry: (
         idCountry: CountryId,
         start?: number,
         limit?: number
-    ) => Promise<State[]>;
+    ) => Promise<{ total: number; states: State[] }>;
 }

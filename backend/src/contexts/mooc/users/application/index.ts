@@ -1,0 +1,1 @@
+export { UserGetterAllUseCase } from './UserGetterAll';

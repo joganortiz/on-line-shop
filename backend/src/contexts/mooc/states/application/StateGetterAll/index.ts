@@ -14,19 +14,19 @@ export class StateGetterAllUseCase {
     }: {
         start?: string;
         limit?: string;
-    }): Promise<PrimitiveState[]> => {
+    }): Promise<{ total: number; data: PrimitiveState[] }> => {
         start = start ?? '0';
         limit = limit ?? '0';
 
-        const result: State[] = await this._stateRepository.getAll(
+        const result = await this._stateRepository.getAll(
             parseInt(start) ?? 0,
             parseInt(limit) ?? 0
         ); // result states
 
-        const resultDataPrimitives = result.map((state: State) =>
+        const resultDataPrimitives = result.states.map((state: State) =>
             state.toPrimitives()
         );
 
-        return resultDataPrimitives;
+        return { total: result.total, data: resultDataPrimitives };
     };
 }

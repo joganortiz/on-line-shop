@@ -12,7 +12,10 @@ export class MySqlCountryRepository implements CountryRepository {
      *
      * @type {(start?: number, limit?: number) => Promise<{}>}
      */
-    getAll = async (start?: number, limit?: number): Promise<Country[]> => {
+    getAll = async (
+        start?: number,
+        limit?: number
+    ): Promise<{ total: number; countries: Country[] }> => {
         const limitQuery: { skip?: number; take?: number } = {
             skip: undefined,
             take: undefined
@@ -30,11 +33,13 @@ export class MySqlCountryRepository implements CountryRepository {
             ...limitQuery
         });
 
+        const total = await CountryEntityMysql.count();
+
         const countries = items.map((item) => {
             return Country.fromPrimitives(item);
         });
 
-        return countries;
+        return { total, countries };
     };
 
     /**
