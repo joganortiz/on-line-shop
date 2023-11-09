@@ -1,7 +1,7 @@
 import { RoleExistByNameUseCase } from '@contexts/mooc/roles/application';
 import { type Request, type Response } from 'express';
 import { getRoleRepository } from '../../dependencies';
-import { UuidV4 } from '@contexts/shared/infrastructure/implementations/Uuid';
+import { UuidV4 } from '@contexts/shared/infrastructure/implementations/uuid';
 import { type Http } from '@contexts/shared/domain/interfaces/http';
 
 export class ExistNameRoleController {

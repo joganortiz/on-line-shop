@@ -5,10 +5,10 @@ import { type PrimitiveCity, type valueObject } from './interfaces';
 import { CityId, CityName } from './value-objects';
 
 export class City extends ModelRoot<PrimitiveCity> {
-    private readonly _id: CityId;
-    private readonly name: CityName;
-    private readonly country?: Country;
-    private readonly state?: State;
+    readonly _id: CityId;
+    readonly name: CityName;
+    readonly country?: Country;
+    readonly state?: State;
 
     constructor(dataClass: valueObject) {
         super();

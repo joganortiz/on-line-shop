@@ -39,14 +39,14 @@ export interface PrimitiveUser {
     city?: PrimitiveCity;
     address?: string;
     token?: string;
-    failedAttempts: number;
+    failedAttempts?: number;
     locked?: string;
     dateLocked?: Date;
     phone?: string;
     codePhone?: string;
     status: string;
     profilePicture?: string;
-    created: Date;
+    created?: Date;
     role: PrimitiveRole;
 }
 
@@ -63,13 +63,13 @@ export interface valueObject {
     city?: City;
     address?: UserAddress;
     token?: UserToken;
-    failedAttempts: UserFailedAttempts;
+    failedAttempts?: UserFailedAttempts;
     locked?: UserLocked;
     dateLocked?: UserdateLocked;
     phone?: UserPhone;
     codePhone?: UserCodePhone;
     status: UserStatus;
     profilePicture?: UserProfilePicture;
-    created: UserCreated;
+    created?: UserCreated;
     role: Role;
 }

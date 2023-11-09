@@ -20,15 +20,15 @@ export class State extends ModelRoot<PrimitiveState> {
     }
 
     static fromPrimitives({ _id, name, iso2, country }: PrimitiveState): State {
-        return new State({
-            _id: new StateId(_id),
-            name: new StateName(name),
-            iso2: new StateIso2(iso2),
-            country:
-                country !== undefined
-                    ? Country.fromPrimitives(country)
-                    : undefined
-        });
+        const state: valueObject = {} as valueObject;
+
+        state._id = new StateId(_id);
+        state.name = new StateName(name);
+        if (iso2 !== undefined) state.iso2 = new StateIso2(iso2);
+        if (country !== undefined)
+            state.country = Country.fromPrimitives(country);
+
+        return new State(state);
     }
 
     toPrimitives(): PrimitiveState {

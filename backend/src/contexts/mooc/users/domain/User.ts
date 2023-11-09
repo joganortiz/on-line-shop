@@ -34,14 +34,14 @@ export class User extends ModelRoot<PrimitiveUser> {
     readonly password: UserPassword;
     readonly address?: UserAddress;
     readonly token?: UserToken;
-    readonly failedAttempts: UserFailedAttempts;
+    readonly failedAttempts?: UserFailedAttempts;
     readonly locked?: UserLocked;
     readonly dateLocked?: UserdateLocked;
     readonly phone?: UserPhone;
     readonly codePhone?: UserCodePhone;
     readonly status: UserStatus;
     readonly profilePicture?: UserProfilePicture;
-    readonly created: UserCreated;
+    readonly created?: UserCreated;
     readonly country?: Country;
     readonly state?: State;
     readonly city?: City;
@@ -86,12 +86,12 @@ export class User extends ModelRoot<PrimitiveUser> {
             phone: new UserPhone(dataPrimitive.phone),
             codePhone: new UserCodePhone(dataPrimitive.codePhone),
             status: new UserStatus(dataPrimitive.status),
-            created: new UserCreated(dataPrimitive.created),
+            created: new UserCreated(dataPrimitive?.created),
             role: Role.fromPrimitives(dataPrimitive.role),
             password: new UserPassword(dataPrimitive.password),
             token: new UserToken(dataPrimitive.token),
             failedAttempts: new UserFailedAttempts(
-                dataPrimitive.failedAttempts
+                dataPrimitive?.failedAttempts
             ),
             profilePicture: new UserProfilePicture(dataPrimitive.profilePicture)
         };
@@ -132,7 +132,7 @@ export class User extends ModelRoot<PrimitiveUser> {
             codePhone: this.codePhone?._value,
             status: this.status._value,
             profilePicture: this.profilePicture?._value,
-            created: this.created._value,
+            created: this.created?._value,
             country: this.country?.toPrimitives(),
             state: this.state?.toPrimitives(),
             city: this.city?.toPrimitives(),

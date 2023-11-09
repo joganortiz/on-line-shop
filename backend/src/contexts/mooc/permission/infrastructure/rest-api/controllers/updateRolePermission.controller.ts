@@ -6,7 +6,7 @@ import {
 import { getPermissionRepository } from '../../dependencies';
 import { getSubModuleRepository } from '@src/contexts/mooc/subModule/infrastructure/dependencies';
 import { getRoleRepository } from '@src/contexts/mooc/roles/infrastructure/dependencies';
-import { UuidV4 } from '@src/contexts/shared/infrastructure/implementations/Uuid';
+import { UuidV4 } from '@src/contexts/shared/infrastructure/implementations/uuid';
 import { type Http } from '@src/contexts/shared/domain/interfaces/http';
 
 export class UpdateRolePermissionController {

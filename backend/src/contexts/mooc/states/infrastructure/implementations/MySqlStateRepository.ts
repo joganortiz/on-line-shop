@@ -28,6 +28,12 @@ export class MySqlStateRepository implements StateRepository {
         }
 
         const items = await StateEntityMysql.find({
+            select: {
+                country: {
+                    _id: true,
+                    name: true
+                }
+            },
             relations: {
                 country: true
             },
@@ -55,6 +61,16 @@ export class MySqlStateRepository implements StateRepository {
      */
     getById = async (id: StateId): Promise<Nullable<State>> => {
         const state = await StateEntityMysql.findOne({
+            select: {
+                country: {
+                    _id: true,
+                    name: true,
+                    iso3: true,
+                    currencySymbol: true,
+                    flag: true,
+                    phoneCode: true
+                }
+            },
             relations: {
                 country: true
             },
@@ -91,6 +107,12 @@ export class MySqlStateRepository implements StateRepository {
         }
 
         const items = await StateEntityMysql.find({
+            select: {
+                country: {
+                    _id: true,
+                    name: true
+                }
+            },
             relations: {
                 country: true
             },

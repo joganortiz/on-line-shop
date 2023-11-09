@@ -1,0 +1,1 @@
+export { CityGetterById } from './CityGetterById';

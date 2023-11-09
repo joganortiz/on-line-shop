@@ -28,11 +28,19 @@ export class MySqlCityRepository implements CityRepository {
         }
 
         const items = await CityEntityMysql.find({
+            select: {
+                state: {
+                    _id: true,
+                    name: true
+                },
+                country: {
+                    _id: true,
+                    name: true
+                }
+            },
             relations: {
                 country: true,
-                state: {
-                    country: false
-                }
+                state: true
             },
             order: {
                 name: 'ASC'
@@ -100,11 +108,19 @@ export class MySqlCityRepository implements CityRepository {
         }
 
         const items = await CityEntityMysql.find({
+            select: {
+                state: {
+                    _id: true,
+                    name: true
+                },
+                country: {
+                    _id: true,
+                    name: true
+                }
+            },
             relations: {
                 country: true,
-                state: {
-                    country: false
-                }
+                state: true
             },
             order: {
                 name: 'ASC'

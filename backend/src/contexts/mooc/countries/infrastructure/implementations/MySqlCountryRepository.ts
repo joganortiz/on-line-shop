@@ -27,6 +27,14 @@ export class MySqlCountryRepository implements CountryRepository {
         }
 
         const items = await CountryEntityMysql.find({
+            select: {
+                _id: true,
+                name: true,
+                iso3: true,
+                currencySymbol: true,
+                flag: true,
+                phoneCode: true
+            },
             order: {
                 name: 'ASC'
             },

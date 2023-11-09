@@ -2,7 +2,7 @@ import { RoleCreateUseCase } from '@contexts/mooc/roles/application';
 import { type Request, type Response } from 'express';
 import { getRoleRepository } from '../../dependencies';
 import { type Http } from '@contexts/shared/domain/interfaces/http';
-import { UuidV4 } from '@contexts/shared/infrastructure/implementations/Uuid';
+import { UuidV4 } from '@contexts/shared/infrastructure/implementations/uuid';
 
 export class CreateRoleController {
     private readonly _http: Http;

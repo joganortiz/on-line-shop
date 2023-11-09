@@ -35,8 +35,7 @@ export class ModuleEntityMysql extends BaseEntity {
     order: number;
 
     @Column({
-        type: 'varchar',
-        length: 100,
+        type: 'longtext',
         nullable: false,
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci'
