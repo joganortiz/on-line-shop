@@ -9,6 +9,7 @@ import { getStateRepository } from '@src/contexts/mooc/states/infrastructure/dep
 import { getCityeRepository } from '@src/contexts/mooc/cities/infrastructure/dependencies';
 import { UuidV4 } from '@src/contexts/shared/infrastructure/implementations/uuid';
 import { Bcrypt } from '@src/contexts/shared/infrastructure/implementations/bcrypt';
+import { FileSystem } from '@src/contexts/shared/infrastructure/implementations/FileSystem';
 
 export class CreateUserController {
     private readonly _http: Http;
@@ -25,12 +26,18 @@ export class CreateUserController {
                 getStateRepository(),
                 getCityeRepository(),
                 new UuidV4(),
-                new Bcrypt()
+                new Bcrypt(),
+                new FileSystem()
             );
 
+            req.body = { ...req.body, ...req.files };
             const role = await useCaseUserGetterById.run(req.body);
 
-            this._http.response.success.run(res, this._http.status.OK, role);
+            this._http.response.success.run(
+                res,
+                this._http.status.CREATED,
+                role
+            );
         } catch (error: any) {
             const status =
                 error.status ?? this._http.status.INTERNAL_SERVER_ERROR;

@@ -7,6 +7,6 @@ export class UserAddress extends StringValueObject {
         super(value);
         this.ensureMaxLength(55, 'address');
 
-        this._value = value;
+        this._value = this.convertValueToUndefined();
     }
 }

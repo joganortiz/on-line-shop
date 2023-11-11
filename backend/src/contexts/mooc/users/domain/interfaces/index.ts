@@ -25,6 +25,7 @@ import { type PrimitiveCountry } from '@src/contexts/mooc/countries/domain/inter
 import { type PrimitiveState } from '@src/contexts/mooc/states/domain/interfaces';
 import { type PrimitiveCity } from '@src/contexts/mooc/cities/domain/interfaces';
 import { type PrimitiveRole } from '@src/contexts/mooc/roles/domain/interfaces';
+import type fileUpload from 'express-fileupload';
 
 export interface PrimitiveUser {
     _id: string;
@@ -50,7 +51,7 @@ export interface PrimitiveUser {
     role: PrimitiveRole;
 }
 
-export interface valueObject {
+export interface valueObjectUser {
     _id: UserId;
     name: UserName;
     lastName: UserLastName;
@@ -72,4 +73,22 @@ export interface valueObject {
     profilePicture?: UserProfilePicture;
     created?: UserCreated;
     role: Role;
+}
+
+export interface UserCommand {
+    name: string;
+    lastName: string;
+    userName: string;
+    identity: string;
+    email: string;
+    password: string;
+    address: string;
+    phone: string;
+    codePhone: string;
+    status: string;
+    country: string;
+    state: string;
+    city: string;
+    idRole: string;
+    img?: fileUpload.UploadedFile;
 }

@@ -6,6 +6,6 @@ export class UserCodePhone extends StringValueObject {
         super(value);
         this.ensureMaxLength(20, 'code phone');
 
-        this._value = value;
+        this._value = this.convertValueToUndefined();
     }
 }

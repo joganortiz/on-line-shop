@@ -2,12 +2,20 @@ import { RemovedType, StatusType } from '@src/contexts/shared/domain/typeOrm';
 import { User } from '../../domain/User';
 import { type UserRepository } from '../../domain/UserRepository';
 import { UserEntityMysql } from '../persistence/typeorm';
-import { type UserId } from '../../domain/value-objects';
+import {
+    type UserUserName,
+    type UserId,
+    type UserIdentity,
+    type UserEmail,
+    type UserPhone,
+    type UserProfilePicture
+} from '../../domain/value-objects';
 import { type Nullable } from '@src/contexts/shared/domain/Nullable';
 import { CountryEntityMysql } from '@src/contexts/mooc/countries/infrastructure/persistence/typeorm';
 import { StateEntityMysql } from '@src/contexts/mooc/states/infrastructure/persistence/typeorm';
 import { CityEntityMysql } from '@src/contexts/mooc/cities/infrastructure/persistence/typeorm';
 import { RoleEntityMysql } from '@src/contexts/mooc/roles/infrastructure/persistence/typeorm';
+import { Not } from 'typeorm';
 
 export class MySqlUserRepository implements UserRepository {
     /**
@@ -33,19 +41,21 @@ export class MySqlUserRepository implements UserRepository {
 
         const items = await UserEntityMysql.find({
             select: {
-                address: false,
-                codePhone: false,
                 country: {
                     _id: true,
-                    name: true,
-                    iso2: true,
-                    iso3: true,
-                    phoneCode: true,
-                    currency: true,
-                    currencyName: true,
-                    currencySymbol: true,
-                    flag: true,
-                    tld: true
+                    name: true
+                },
+                state: {
+                    _id: true,
+                    name: true
+                },
+                city: {
+                    _id: true,
+                    name: true
+                },
+                role: {
+                    _id: true,
+                    name: true
                 }
             },
             relations: {
@@ -85,6 +95,24 @@ export class MySqlUserRepository implements UserRepository {
      */
     getById = async (id: UserId): Promise<Nullable<User>> => {
         const user = await UserEntityMysql.findOne({
+            select: {
+                country: {
+                    _id: true,
+                    name: true
+                },
+                state: {
+                    _id: true,
+                    name: true
+                },
+                city: {
+                    _id: true,
+                    name: true
+                },
+                role: {
+                    _id: true,
+                    name: true
+                }
+            },
             relations: {
                 country: true,
                 state: true,
@@ -107,7 +135,7 @@ export class MySqlUserRepository implements UserRepository {
      * @date 11/6/2023 - 7:02:35 PM
      * @author Jogan Ortiz Muñoz
      *
-     * @type {(user: User) => Promise<User>}
+     * @type {(user: User) => Promise<void>}
      */
     save = async (user: User): Promise<void> => {
         const prepareUser = new UserEntityMysql();
@@ -158,17 +186,123 @@ export class MySqlUserRepository implements UserRepository {
         prepareUser.role = prepareRole;
 
         await prepareUser.save();
+    };
 
-        // const {
-        //     password,
-        //     token,
-        //     dateLocked,
-        //     locked,
-        //     failedAttempts,
-        //     removed,
-        //     ...rest
-        // } = userCreate;
+    updateProfileById = async (
+        id: UserId,
+        profile: UserProfilePicture
+    ): Promise<void> => {
+        await UserEntityMysql.update(
+            { _id: id._value },
+            {
+                profilePicture: profile._value
+            }
+        );
+    };
 
-        // return User.fromPrimitives(userCreate);
+    /**
+     * @description list user by UserName
+     * @date 11/11/2023 - 4:47:30 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(username: UserUserName, id: UserId) => Promise<Nullable<User>>}
+     */
+    getByUserName = async (
+        username: UserUserName,
+        id: UserId
+    ): Promise<Nullable<User>> => {
+        const user = await UserEntityMysql.findOne({
+            // relations: {
+            //     country: true,
+            //     state: true,
+            //     city: true,
+            //     role: true
+            // },
+            where: {
+                userName: username._value,
+                removed: RemovedType.NOT_REMOVED,
+                _id: Not(id._value)
+            }
+        });
+
+        if (user === null) return null;
+
+        return User.fromPrimitives(user);
+    };
+
+    /**
+     * @description list user by identity
+     * @date 11/11/2023 - 4:57:34 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(identity: UserIdentity, id: UserId) => Promise<Nullable<User>>}
+     */
+    getByIdentity = async (
+        identity: UserIdentity,
+        id: UserId
+    ): Promise<Nullable<User>> => {
+        const user = await UserEntityMysql.findOne({
+            // relations: {
+            //     country: true,
+            //     state: true,
+            //     city: true,
+            //     role: true
+            // },
+            where: {
+                identity: identity._value,
+                removed: RemovedType.NOT_REMOVED,
+                _id: Not(id._value)
+            }
+        });
+
+        if (user === null) return null;
+
+        return User.fromPrimitives(user);
+    };
+
+    getByEmail = async (
+        email: UserEmail,
+        id: UserId
+    ): Promise<Nullable<User>> => {
+        const user = await UserEntityMysql.findOne({
+            // relations: {
+            //     country: true,
+            //     state: true,
+            //     city: true,
+            //     role: true
+            // },
+            where: {
+                email: email._value,
+                removed: RemovedType.NOT_REMOVED,
+                _id: Not(id._value)
+            }
+        });
+
+        if (user === null) return null;
+
+        return User.fromPrimitives(user);
+    };
+
+    getByPhone = async (
+        phone: UserPhone,
+        id: UserId
+    ): Promise<Nullable<User>> => {
+        const user = await UserEntityMysql.findOne({
+            relations: {
+                country: true,
+                state: true,
+                city: true,
+                role: true
+            },
+            where: {
+                phone: phone._value,
+                removed: RemovedType.NOT_REMOVED,
+                _id: Not(id._value)
+            }
+        });
+
+        if (user === null) return null;
+
+        return User.fromPrimitives(user);
     };
 }

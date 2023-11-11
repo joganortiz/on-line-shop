@@ -25,6 +25,7 @@ docker/docker-compose
 target/
 dist/
 build/
+public/
 
 # JetBrains IDE
 .idea/

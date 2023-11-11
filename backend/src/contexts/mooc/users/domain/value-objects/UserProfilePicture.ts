@@ -1,6 +1,9 @@
-export class UserProfilePicture {
+import { StringValueObject } from '@src/contexts/shared/domain/value-object';
+
+export class UserProfilePicture extends StringValueObject {
     readonly _value?: string;
     constructor(value?: string) {
-        this._value = value;
+        super(value);
+        this._value = this.convertValueToUndefined();
     }
 }

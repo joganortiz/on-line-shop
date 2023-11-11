@@ -1,4 +1,5 @@
 import { StringValueObject } from '@src/contexts/shared/domain/value-object';
+import { UserLastNameEmptyException } from '../exceptions';
 
 export class UserLastName extends StringValueObject {
     readonly _value: string;
@@ -15,7 +16,7 @@ export class UserLastName extends StringValueObject {
         const isDefinite = this.ensureValueIsDefined();
 
         if (!isDefinite) {
-            throw new Error();
+            throw new UserLastNameEmptyException();
         }
     }
 }

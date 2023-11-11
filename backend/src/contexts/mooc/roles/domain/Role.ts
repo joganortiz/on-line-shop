@@ -26,19 +26,21 @@ export class Role implements ModelRoot<PrimitiveRole> {
         description,
         created
     }: PrimitiveRole): Role {
-        return new Role({
-            _id: new RoleId(_id),
-            name: new RoleName(name),
-            description: new RoleDescription(description),
-            created: new RoleCreated(created)
-        });
+        const role: valueObject = {} as valueObject;
+
+        role._id = new RoleId(_id);
+        role.name = new RoleName(name);
+        if (description !== undefined)
+            role.description = new RoleDescription(description);
+        if (created !== undefined) role.created = new RoleCreated(created);
+        return new Role(role);
     }
 
     toPrimitives(): PrimitiveRole {
         return {
             _id: this._id._value,
             name: this.name._value,
-            description: this.description._value,
+            description: this.description?._value,
             created: this.createDate?._value
         };
     }

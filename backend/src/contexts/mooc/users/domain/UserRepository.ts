@@ -1,6 +1,13 @@
 import { type Nullable } from '@src/contexts/shared/domain/Nullable';
 import { type User } from './User';
-import { type UserId } from './value-objects';
+import {
+    type UserUserName,
+    type UserId,
+    type UserIdentity,
+    type UserEmail,
+    type UserPhone,
+    type UserProfilePicture
+} from './value-objects';
 
 export interface UserRepository {
     /**
@@ -35,4 +42,57 @@ export interface UserRepository {
      * @type {(user: User) => Promise<User>}
      */
     save: (user: User) => Promise<void>;
+
+    updateProfileById: (
+        id: UserId,
+        profile: UserProfilePicture
+    ) => Promise<void>;
+
+    /**
+     * @description list user by UserName
+     * @date 11/11/2023 - 4:45:42 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(
+     *         username: UserUserName,
+     *         id: UserId
+     *     ) => Promise<Nullable<User>>}
+     */
+    getByUserName: (
+        username: UserUserName,
+        id: UserId
+    ) => Promise<Nullable<User>>;
+
+    /**
+     * @description list user by identity
+     * @date 11/11/2023 - 4:56:03 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(
+     *         identity: UserIdentity,
+     *         id: UserId
+     *     ) => Promise<Nullable<User>>}
+     */
+    getByIdentity: (
+        identity: UserIdentity,
+        id: UserId
+    ) => Promise<Nullable<User>>;
+
+    /**
+     * @description list user by email
+     * @date 11/11/2023 - 5:03:37 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(email: UserEmail, id: UserId) => Promise<Nullable<User>>}
+     */
+    getByEmail: (email: UserEmail, id: UserId) => Promise<Nullable<User>>;
+
+    /**
+     * @description list user by phone
+     * @date 11/11/2023 - 5:03:44 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(phone: UserPhone, id: UserId) => Promise<Nullable<User>>}
+     */
+    getByPhone: (phone: UserPhone, id: UserId) => Promise<Nullable<User>>;
 }

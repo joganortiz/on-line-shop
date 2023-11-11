@@ -1,3 +1,12 @@
+export { UserPhoneAlreadyExistsException } from './UserPhoneAlreadyExistsException';
 export { UserNotFoundException } from './UserNotFoundException';
 export { UserNameEmptyException } from './UserNameEmptyException';
 export { UserUserNameEmptyException } from './UserUserNameEmptyException';
+export { UserLastNameEmptyException } from './UserLastNameEmptyException';
+export { UserUserNameNotValidException } from './UserUserNameNotValidException';
+export { UserEmailEmptyException } from './UserEmailEmptyException';
+export { UserEmailNotValidException } from './UserEmailNotValidException';
+export { UserPasswordEmptyException } from './UserPasswordEmptyException';
+export { UserNameAlreadyExistsException } from './UserUserNameAlreadyExistsException';
+export { IdentityAlreadyExistsException } from './UserIdentityAlreadyExistsException';
+export { UserEmailAlreadyExistsException } from './UserEmailAlreadyExistsException';

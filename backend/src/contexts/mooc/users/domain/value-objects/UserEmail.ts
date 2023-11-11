@@ -1,4 +1,8 @@
 import { StringValueObject } from '@src/contexts/shared/domain/value-object';
+import {
+    UserEmailEmptyException,
+    UserEmailNotValidException
+} from '../exceptions';
 
 export class UserEmail extends StringValueObject {
     readonly _value: string;
@@ -16,13 +20,13 @@ export class UserEmail extends StringValueObject {
         const isDefinite = this.ensureValueIsDefined();
 
         if (!isDefinite) {
-            throw new Error();
+            throw new UserEmailEmptyException();
         }
     };
 
     private readonly isEmailValue = (): void => {
         const isEmail = this.validateEmailValue();
 
-        if (!isEmail) throw new Error();
+        if (!isEmail) throw new UserEmailNotValidException();
     };
 }

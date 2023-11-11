@@ -1,5 +1,5 @@
 import { ModelRoot } from '@src/contexts/shared/domain';
-import { type PrimitiveUser, type valueObject } from './interfaces';
+import { type PrimitiveUser, type valueObjectUser } from './interfaces';
 import {
     UserAddress,
     UserCodePhone,
@@ -47,7 +47,7 @@ export class User extends ModelRoot<PrimitiveUser> {
     readonly city?: City;
     readonly role: Role;
 
-    constructor(dataClass: valueObject) {
+    constructor(dataClass: valueObjectUser) {
         super();
         this._id = dataClass._id;
         this.name = dataClass.name;
@@ -72,8 +72,8 @@ export class User extends ModelRoot<PrimitiveUser> {
         this.role = dataClass.role;
     }
 
-    static fromPrimitives(dataPrimitive: PrimitiveUser): User {
-        const user: valueObject = {
+    static create(dataPrimitive: PrimitiveUser): User {
+        const user: valueObjectUser = {
             _id: new UserId(dataPrimitive._id),
             name: new UserName(dataPrimitive.name),
             lastName: new UserLastName(dataPrimitive.lastName),
@@ -114,23 +114,83 @@ export class User extends ModelRoot<PrimitiveUser> {
         return new User(user);
     }
 
+    static fromPrimitives(dataPrimitive: PrimitiveUser): User {
+        const primitive: valueObjectUser = {} as valueObjectUser;
+
+        primitive._id = new UserId(dataPrimitive._id);
+        primitive.userName = new UserUserName(dataPrimitive.userName);
+
+        if (dataPrimitive.lastName !== undefined)
+            primitive.lastName = new UserLastName(dataPrimitive.lastName);
+        if (dataPrimitive.name !== undefined)
+            primitive.name = new UserName(dataPrimitive.name);
+        if (dataPrimitive.identity !== undefined)
+            primitive.identity = new UserIdentity(dataPrimitive.identity);
+        if (dataPrimitive.email !== undefined)
+            primitive.email = new UserEmail(dataPrimitive.email);
+        if (dataPrimitive.password !== undefined)
+            primitive.password = new UserPassword(dataPrimitive.password);
+        if (dataPrimitive.address !== undefined)
+            primitive.address = new UserAddress(dataPrimitive.address);
+        if (dataPrimitive.locked !== undefined)
+            primitive.locked = new UserLocked(dataPrimitive.locked);
+        if (dataPrimitive.dateLocked !== undefined)
+            primitive.dateLocked = new UserdateLocked(dataPrimitive.dateLocked);
+        if (dataPrimitive.phone !== undefined)
+            primitive.phone = new UserPhone(dataPrimitive.phone);
+        if (dataPrimitive.codePhone !== undefined)
+            primitive.codePhone = new UserCodePhone(dataPrimitive.codePhone);
+        if (dataPrimitive.status !== undefined)
+            primitive.status = new UserStatus(dataPrimitive.status);
+        if (dataPrimitive.created !== undefined)
+            primitive.created = new UserCreated(dataPrimitive.created);
+        if (dataPrimitive.role !== undefined)
+            primitive.role = Role.fromPrimitives(dataPrimitive.role);
+        if (dataPrimitive.token !== undefined)
+            primitive.token = new UserToken(dataPrimitive.token);
+        if (dataPrimitive.failedAttempts !== undefined)
+            primitive.failedAttempts = new UserFailedAttempts(
+                dataPrimitive.failedAttempts
+            );
+        if (dataPrimitive.profilePicture !== undefined)
+            primitive.profilePicture = new UserProfilePicture(
+                dataPrimitive.profilePicture
+            );
+        if (
+            dataPrimitive.country !== undefined &&
+            dataPrimitive.country !== null
+        ) {
+            primitive.country = Country.fromPrimitives(dataPrimitive.country);
+        }
+
+        if (dataPrimitive.state !== undefined && dataPrimitive.state !== null) {
+            primitive.state = State.fromPrimitives(dataPrimitive.state);
+        }
+
+        if (dataPrimitive.city !== undefined && dataPrimitive.city !== null) {
+            primitive.city = City.fromPrimitives(dataPrimitive.city);
+        }
+
+        return new User(primitive);
+    }
+
     toPrimitives(): PrimitiveUser {
         return {
             _id: this._id._value,
             name: this.name._value,
-            lastName: this.lastName._value,
-            userName: this.userName._value,
+            lastName: this.lastName?._value,
+            userName: this.userName?._value,
             identity: this.identity?._value,
-            email: this.email._value,
+            email: this.email?._value,
             password: this.password?._value,
             address: this.address?._value,
             token: this.token?._value,
             failedAttempts: this.failedAttempts?._value,
             locked: this.locked?._value,
             dateLocked: this.dateLocked?._value,
-            phone: this.phone?._value ?? '',
+            phone: this.phone?._value,
             codePhone: this.codePhone?._value,
-            status: this.status._value,
+            status: this.status?._value,
             profilePicture: this.profilePicture?._value,
             created: this.created?._value,
             country: this.country?.toPrimitives(),
