@@ -118,8 +118,8 @@ export class User extends ModelRoot<PrimitiveUser> {
         const primitive: valueObjectUser = {} as valueObjectUser;
 
         primitive._id = new UserId(dataPrimitive._id);
-        primitive.userName = new UserUserName(dataPrimitive.userName);
-
+        if (dataPrimitive.userName !== undefined)
+            primitive.userName = new UserUserName(dataPrimitive.userName);
         if (dataPrimitive.lastName !== undefined)
             primitive.lastName = new UserLastName(dataPrimitive.lastName);
         if (dataPrimitive.name !== undefined)

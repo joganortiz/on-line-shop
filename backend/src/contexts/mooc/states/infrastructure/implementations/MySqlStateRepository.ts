@@ -85,6 +85,39 @@ export class MySqlStateRepository implements StateRepository {
     };
 
     /**
+     * @description list state by ID and ID country
+     * @date 11/13/2023 - 10:38:27 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(id: StateId, idCountry: CountryId) => Promise<Nullable<State>>}
+     */
+    getByIdAndIdCountry = async (
+        id: StateId,
+        idCountry: CountryId
+    ): Promise<Nullable<State>> => {
+        const state = await StateEntityMysql.findOne({
+            select: {
+                country: {
+                    _id: true
+                }
+            },
+            relations: {
+                country: true
+            },
+            where: {
+                _id: id._value,
+                country: {
+                    _id: idCountry._value
+                }
+            }
+        });
+
+        if (state === null) return null;
+
+        return State.fromPrimitives(state);
+    };
+
+    /**
      * @description list all states by id Country
      * @date 11/5/2023 - 12:40:47 AM
      * @author Jogan Ortiz Muñoz

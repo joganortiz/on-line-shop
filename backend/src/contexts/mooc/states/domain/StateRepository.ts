@@ -29,6 +29,21 @@ export interface StateRepository {
     getById: (id: StateId) => Promise<Nullable<State>>;
 
     /**
+     * @description list state by ID and ID country
+     * @date 11/13/2023 - 10:37:59 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(
+     *         id: StateId,
+     *         idCountry: CountryId
+     *     ) => Promise<Nullable<State>>}
+     */
+    getByIdAndIdCountry: (
+        id: StateId,
+        idCountry: CountryId
+    ) => Promise<Nullable<State>>;
+
+    /**
      * @description list all states by id Country
      * @date 11/5/2023 - 9:17:39 PM
      * @author Jogan Ortiz Muñoz

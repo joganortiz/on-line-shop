@@ -1,31 +1,26 @@
-import * as imports from './importsCreateUsers';
+import * as imports from '../UserCreate/importsCreateUsers';
 
-export class UserCreateUseCase {
+export class UserUpdateUseCase {
     private readonly _userRepository: imports.UserRepository;
-    private readonly _uuidGenerator: imports.UuidRepository;
     private readonly _roleGetterById: imports.RoleGetterById;
     private readonly _countryGetterById: imports.CountryGetterById;
     private readonly _stateGetterById: imports.StateGetterById;
     private readonly _cityGetterById: imports.CityGetterById;
-    private readonly _bcrypt: imports.BcryptRepository;
     private readonly _existUserByUserName: imports.ExistUserByUserName;
     private readonly _existUserByIdentity: imports.ExistUserByIdentity;
     private readonly _existUserByEmail: imports.ExistUserByEmail;
     private readonly _existUserByPhone: imports.ExistUserByPhone;
     private readonly _fileSistem: imports.FileSystemRepository;
+    private readonly _usereGetterById: imports.UserGetterById;
     constructor(
         userRepository: imports.UserRepository,
         roleRepository: imports.RoleRepository,
         countryRepository: imports.CountryRepository,
         stateRepository: imports.StateRepository,
         cityRepository: imports.CityRepository,
-        uuidGenerator: imports.UuidRepository,
-        bcrypt: imports.BcryptRepository,
         fileSistem: imports.FileSystemRepository
     ) {
         this._userRepository = userRepository;
-        this._uuidGenerator = uuidGenerator;
-        this._bcrypt = bcrypt;
         this._roleGetterById = new imports.RoleGetterById(roleRepository);
         this._countryGetterById = new imports.CountryGetterById(
             countryRepository
@@ -41,11 +36,15 @@ export class UserCreateUseCase {
         this._existUserByEmail = new imports.ExistUserByEmail(userRepository);
         this._existUserByPhone = new imports.ExistUserByPhone(userRepository);
         this._fileSistem = fileSistem;
+        this._usereGetterById = new imports.UserGetterById(userRepository);
     }
 
     run = async (
+        id: string,
         dataUser: imports.UserCommand
     ): Promise<imports.PrimitiveUser> => {
+        const user = await this._usereGetterById.run(id);
+
         let country;
         let state;
         let city;
@@ -53,41 +52,40 @@ export class UserCreateUseCase {
             // get the country data
             country = await this._countryGetterById.run(dataUser.country);
 
-            if (dataUser.state !== undefined) {
-                // get the state data
-                state = await this._stateGetterById.run(dataUser.state);
-            }
+            // get the state data
+            state = await this._stateGetterById.run(dataUser.state);
 
-            if (dataUser.city !== undefined && state !== undefined) {
-                // get the city data
-                city = await this._cityGetterById.run(dataUser.city);
-            }
+            // get the city data
+            city = await this._cityGetterById.run(dataUser.city);
         }
 
         // get the role data
-        const role = await this._roleGetterById.run(dataUser.idRole);
-        const user = imports.User.create({
-            _id: await this._uuidGenerator.generate(),
-            userName: dataUser.userName,
-            name: dataUser.name,
-            lastName: dataUser.lastName,
-            email: dataUser.email,
-            identity: dataUser.identity,
-            password: await this._bcrypt.cryptPassword(dataUser.password),
-            address: dataUser.address,
-            phone: dataUser.phone,
-            codePhone: dataUser.codePhone,
-            status: dataUser.status,
-            country: country?.toPrimitives(),
-            state: state?.toPrimitives(),
-            city: city?.toPrimitives(),
+        const role = await this._roleGetterById.run(
+            dataUser.idRole ?? user.role._id._value
+        );
+
+        const userUpdate = imports.User.fromPrimitives({
+            _id: user._id._value,
+            userName: dataUser.userName ?? user.userName._value,
+            name: dataUser.name ?? user.name._value,
+            lastName: dataUser.lastName ?? user.lastName._value,
+            email: dataUser.email ?? user.email._value,
+            identity: dataUser.identity ?? user.identity?._value,
+            password: undefined as any,
+            address: dataUser.address ?? user.address?._value,
+            phone: dataUser.phone ?? user.phone?._value,
+            codePhone: dataUser.codePhone ?? user.codePhone?._value,
+            status: dataUser.status ?? user.status._value,
+            country: country?.toPrimitives() ?? user.country?.toPrimitives(),
+            state: state?.toPrimitives() ?? user.state?.toPrimitives(),
+            city: city?.toPrimitives() ?? user.city?.toPrimitives(),
             role: role.toPrimitives()
         });
 
         // validate if the user already exists
         const existUserName: boolean = await this._existUserByUserName.run(
             user._id._value,
-            user.userName._value
+            userUpdate.userName._value
         );
 
         if (existUserName) throw new imports.UserNameAlreadyExistsException();
@@ -95,7 +93,7 @@ export class UserCreateUseCase {
         // validate if the id already exists
         const existIdentity: boolean = await this._existUserByIdentity.run(
             user._id._value,
-            user.identity?._value
+            userUpdate.identity?._value
         );
 
         if (existIdentity) throw new imports.IdentityAlreadyExistsException();
@@ -103,7 +101,7 @@ export class UserCreateUseCase {
         // validate if the email exists
         const existEmail: boolean = await this._existUserByEmail.run(
             user.email._value,
-            user._id._value
+            userUpdate._id._value
         );
 
         if (existEmail) throw new imports.UserEmailAlreadyExistsException();
@@ -111,31 +109,17 @@ export class UserCreateUseCase {
         // validate if the phone exists
         const existPhone: boolean = await this._existUserByPhone.run(
             user._id._value,
-            user.phone?._value
+            userUpdate.phone?._value
         );
 
         if (existPhone) throw new imports.UserPhoneAlreadyExistsException();
 
         // if everything goes well we save the user
-        await this._userRepository.save(user);
+        const userUpdateGetter = await this._userRepository.update(
+            user._id,
+            userUpdate
+        );
 
-        if (dataUser.img !== undefined) {
-            const image = await this._fileSistem.saveImg(
-                dataUser.img,
-                'users',
-                user._id._value
-            );
-
-            await this._userRepository.updateProfileById(
-                user._id,
-                new imports.UserProfilePicture(image)
-            );
-        }
-
-        const newUser = await this._userRepository.getById(user._id);
-
-        if (newUser == null) throw new Error('error');
-
-        return newUser.toPrimitives();
+        return userUpdateGetter.toPrimitives();
     };
 }

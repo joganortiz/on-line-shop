@@ -1,3 +1,4 @@
+export { UserGetterById } from './UserGetterById';
 export { ExistUserByPhone } from './ExistUserByPhone';
 export { ExistUserByEmail } from './ExistUserByEmail';
 export { ExistUserByIdentity } from './ExistUserByIdentity';

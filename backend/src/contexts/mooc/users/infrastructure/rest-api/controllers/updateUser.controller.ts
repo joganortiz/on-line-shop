@@ -1,17 +1,14 @@
-import { type Request, type Response } from 'express';
-
 import { type Http } from '@src/contexts/shared/domain/interfaces/http';
-import { UserCreateUseCase } from '../../../application';
+import { UserUpdateUseCase } from '../../../application';
 import { getUserRepository } from '../../dependencies';
 import { getRoleRepository } from '@src/contexts/mooc/roles/infrastructure/dependencies';
 import { getCountryRepository } from '@src/contexts/mooc/countries/infrastructure/dependencies';
 import { getStateRepository } from '@src/contexts/mooc/states/infrastructure/dependencies';
 import { getCityeRepository } from '@src/contexts/mooc/cities/infrastructure/dependencies';
-import { UuidV4 } from '@src/contexts/shared/infrastructure/implementations/uuid';
-import { Bcrypt } from '@src/contexts/shared/infrastructure/implementations/bcrypt';
 import { FileSystem } from '@src/contexts/shared/infrastructure/implementations/FileSystem';
+import { type Request, type Response } from 'express';
 
-export class CreateUserController {
+export class UpdateUserController {
     private readonly _http: Http;
     constructor(http: Http) {
         this._http = http;
@@ -19,25 +16,22 @@ export class CreateUserController {
 
     run = async (req: Request, res: Response): Promise<void> => {
         try {
-            const useCaseUserCreate = new UserCreateUseCase(
+            const useCaseUserGetterById = new UserUpdateUseCase(
                 getUserRepository(),
                 getRoleRepository(),
                 getCountryRepository(),
                 getStateRepository(),
                 getCityeRepository(),
-                new UuidV4(),
-                new Bcrypt(),
                 new FileSystem()
             );
 
             req.body = { ...req.body, ...req.files };
-            const role = await useCaseUserCreate.run(req.body);
-
-            this._http.response.success.run(
-                res,
-                this._http.status.CREATED,
-                role
+            const role = await useCaseUserGetterById.run(
+                req.params.id,
+                req.body
             );
+
+            this._http.response.success.run(res, this._http.status.OK, role);
         } catch (error: any) {
             const status =
                 error.status ?? this._http.status.INTERNAL_SERVER_ERROR;

@@ -1,3 +1,4 @@
+export { UserAdminNotDeleteException } from './UserAdminNotDeleteException';
 export { UserPhoneAlreadyExistsException } from './UserPhoneAlreadyExistsException';
 export { UserNotFoundException } from './UserNotFoundException';
 export { UserNameEmptyException } from './UserNameEmptyException';

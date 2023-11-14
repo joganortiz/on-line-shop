@@ -1,4 +1,8 @@
-import { RemovedType, StatusType } from '@src/contexts/shared/domain/typeOrm';
+import {
+    LockedType,
+    RemovedType,
+    StatusType
+} from '@src/contexts/shared/domain/typeOrm';
 import { User } from '../../domain/User';
 import { type UserRepository } from '../../domain/UserRepository';
 import { UserEntityMysql } from '../persistence/typeorm';
@@ -188,6 +192,111 @@ export class MySqlUserRepository implements UserRepository {
         await prepareUser.save();
     };
 
+    /**
+     * @description update user by ID
+     * @date 11/13/2023 - 10:23:50 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(idUser: UserId, user: User) => Promise<User>}
+     */
+    update = async (idUser: UserId, user: User): Promise<User> => {
+        const prepareUpdate = new UserEntityMysql();
+
+        if (user.userName._value !== undefined)
+            prepareUpdate.userName = user.userName._value;
+
+        if (user.name?._value !== undefined)
+            prepareUpdate.name = user.name._value;
+
+        if (user.lastName?._value !== undefined)
+            prepareUpdate.lastName = user.lastName._value;
+
+        if (user.identity?._value !== undefined)
+            prepareUpdate.identity = user.identity._value;
+
+        if (user.email?._value !== undefined)
+            prepareUpdate.email = user.email._value;
+
+        if (user.password?._value !== undefined)
+            prepareUpdate.password = user.password._value;
+
+        if (user.address?._value !== undefined)
+            prepareUpdate.address = user.address._value;
+
+        if (user.token?._value !== undefined)
+            prepareUpdate.token = user.token._value;
+
+        if (user.failedAttempts?._value !== undefined)
+            prepareUpdate.failedAttempts = user.failedAttempts._value;
+
+        if (user.locked?._value !== undefined)
+            prepareUpdate.locked =
+                user.locked._value === '0'
+                    ? LockedType.LOCKED
+                    : LockedType.NOT_LOCKED;
+
+        if (user.dateLocked?._value !== undefined)
+            prepareUpdate.dateLocked = user.dateLocked._value;
+
+        if (user.phone?._value !== undefined)
+            prepareUpdate.phone = user.phone._value;
+
+        if (user.codePhone?._value !== undefined)
+            prepareUpdate.codePhone = user.codePhone._value;
+
+        if (user.status?._value !== undefined)
+            prepareUpdate.status =
+                user.status._value === '1'
+                    ? StatusType.ACTIVE
+                    : StatusType.INACTIVE;
+
+        if (user.profilePicture?._value !== undefined)
+            prepareUpdate.profilePicture = user.profilePicture._value;
+
+        if (user.country?._id._value !== undefined) {
+            const prepareCountry = new CountryEntityMysql();
+            prepareCountry._id = user.country._id._value;
+
+            prepareUpdate.country = prepareCountry;
+        }
+
+        if (user.state?._id._value !== undefined) {
+            const prepareState = new StateEntityMysql();
+            prepareState._id = user.state._id._value;
+
+            prepareUpdate.state = prepareState;
+        }
+
+        if (user.city?._id._value !== undefined) {
+            const prepareCity = new CityEntityMysql();
+            prepareCity._id = user.city._id._value;
+
+            prepareUpdate.city = prepareCity;
+        }
+
+        if (user.role?._id._value !== undefined) {
+            const prepareRole = new RoleEntityMysql();
+            prepareRole._id = user.role._id._value;
+
+            prepareUpdate.role = prepareRole;
+        }
+
+        await UserEntityMysql.update({ _id: idUser._value }, prepareUpdate);
+
+        const userGetter = await this.getById(idUser);
+
+        if (userGetter == null) throw new Error('');
+
+        return userGetter;
+    };
+
+    /**
+     * @description update profile user by Id
+     * @date 11/12/2023 - 6:36:40 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(id: UserId, profile: UserProfilePicture) => Promise<void>}
+     */
     updateProfileById = async (
         id: UserId,
         profile: UserProfilePicture
@@ -196,6 +305,23 @@ export class MySqlUserRepository implements UserRepository {
             { _id: id._value },
             {
                 profilePicture: profile._value
+            }
+        );
+    };
+
+    /**
+     * @description delete a user by ID
+     * @date 11/12/2023 - 7:28:38 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(id: UserId) => Promise<void>}
+     */
+    delete = async (id: UserId): Promise<void> => {
+        await UserEntityMysql.update(
+            { _id: id._value },
+            {
+                removed: RemovedType.REMOVED,
+                status: StatusType.INACTIVE
             }
         );
     };
@@ -260,6 +386,13 @@ export class MySqlUserRepository implements UserRepository {
         return User.fromPrimitives(user);
     };
 
+    /**
+     * @description list user by email
+     * @date 11/12/2023 - 7:29:01 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(email: UserEmail, id: UserId) => Promise<Nullable<User>>}
+     */
     getByEmail = async (
         email: UserEmail,
         id: UserId
@@ -283,6 +416,13 @@ export class MySqlUserRepository implements UserRepository {
         return User.fromPrimitives(user);
     };
 
+    /**
+     * @description list user by phone
+     * @date 11/12/2023 - 7:29:29 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(phone: UserPhone, id: UserId) => Promise<Nullable<User>>}
+     */
     getByPhone = async (
         phone: UserPhone,
         id: UserId

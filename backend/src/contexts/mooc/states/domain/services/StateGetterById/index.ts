@@ -10,13 +10,13 @@ export class StateGetterById {
     }
 
     async run(id: string): Promise<State> {
-        const idCountry = new StateId(id);
-        const country = await this._stateyRepository.getById(idCountry);
+        const idState = new StateId(id);
+        const state = await this._stateyRepository.getById(idState);
 
-        if (country === null) {
+        if (state === null) {
             throw new StateNotFoundException();
         }
 
-        return country;
+        return state;
     }
 }

@@ -25,3 +25,4 @@ export {
 export { type PrimitiveUser, type UserCommand } from '../../domain/interfaces';
 export { type FileSystemRepository } from '@src/contexts/shared/domain/plugins/FileSystemRepository';
 export { UserProfilePicture } from '../../domain/value-objects';
+export { UserGetterById } from '../../domain/services';

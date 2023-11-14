@@ -43,10 +43,38 @@ export interface UserRepository {
      */
     save: (user: User) => Promise<void>;
 
+    /**
+     * @description update user by ID
+     * @date 11/13/2023 - 10:23:34 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(id: UserId, user: User) => Promise<User>}
+     */
+    update: (id: UserId, user: User) => Promise<User>;
+
+    /**
+     * @description update profile user by Id
+     * @date 11/12/2023 - 6:33:07 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(
+     *         id: UserId,
+     *         profile: UserProfilePicture
+     *     ) => Promise<void>}
+     */
     updateProfileById: (
         id: UserId,
         profile: UserProfilePicture
     ) => Promise<void>;
+
+    /**
+     * @description delete a user by ID
+     * @date 11/12/2023 - 6:34:11 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(id: UserId) => Promise<boolean>}
+     */
+    delete: (id: UserId) => Promise<void>;
 
     /**
      * @description list user by UserName
