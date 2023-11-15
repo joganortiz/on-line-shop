@@ -236,7 +236,7 @@ export class UserEntityMysql extends BaseEntity {
         name: 'created_at',
         type: 'timestamp',
         precision: 0,
-        nullable: true,
+        nullable: false,
         default: () => 'CURRENT_TIMESTAMP'
     })
     created: Date;
@@ -247,7 +247,7 @@ export class UserEntityMysql extends BaseEntity {
         precision: 0,
         select: false,
         nullable: true,
-        default: () => 'CURRENT_TIMESTAMP',
+        default: () => 'NULL',
         onUpdate: 'CURRENT_TIMESTAMP'
     })
     updated?: Date;

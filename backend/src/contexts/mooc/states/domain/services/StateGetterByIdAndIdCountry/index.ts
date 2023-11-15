@@ -10,6 +10,10 @@ export class StateGetterByIdAndIdCountry {
     }
 
     async run(id: string, idCountry: string): Promise<State> {
+        if (idCountry === undefined || idCountry == null) {
+            throw new Error('Debe existir un paise primero');
+        }
+
         const stateId = new StateId(id);
         const countryId = new CountryId(idCountry);
         const country = await this._stateyRepository.getByIdAndIdCountry(

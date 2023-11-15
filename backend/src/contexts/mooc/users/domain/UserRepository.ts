@@ -48,9 +48,9 @@ export interface UserRepository {
      * @date 11/13/2023 - 10:23:34 PM
      * @author Jogan Ortiz Muñoz
      *
-     * @type {(id: UserId, user: User) => Promise<User>}
+     * @type {(id: UserId, user: User) => Promise<void>}
      */
-    update: (id: UserId, user: User) => Promise<User>;
+    update: (id: UserId, user: User) => Promise<void>;
 
     /**
      * @description update profile user by Id

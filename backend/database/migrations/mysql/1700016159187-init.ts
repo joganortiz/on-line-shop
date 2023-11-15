@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1699927668230 implements MigrationInterface {
-    name = 'Init1699927668230'
+export class Init1700016159187 implements MigrationInterface {
+    name = 'Init1700016159187'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
@@ -71,8 +71,8 @@ export class Init1699927668230 implements MigrationInterface {
                 \`status\` enum ('0', '1') NOT NULL COMMENT '0->Inactive 1->Active' DEFAULT '0',
                 \`removed\` enum ('0', '1') NOT NULL COMMENT '0->Removed 1->not removed' DEFAULT '1',
                 \`profile_picture\` varchar(255) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
-                \`created_at\` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
-                \`updated_at\` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                \`created_at\` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                \`updated_at\` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
                 \`country_id\` varchar(36) NULL,
                 \`state_id\` varchar(36) NULL,
                 \`city_id\` varchar(36) NULL,

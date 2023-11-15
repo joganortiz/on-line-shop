@@ -197,9 +197,9 @@ export class MySqlUserRepository implements UserRepository {
      * @date 11/13/2023 - 10:23:50 PM
      * @author Jogan Ortiz Muñoz
      *
-     * @type {(idUser: UserId, user: User) => Promise<User>}
+     * @type {(idUser: UserId, user: User) => Promise<void>}
      */
-    update = async (idUser: UserId, user: User): Promise<User> => {
+    update = async (idUser: UserId, user: User): Promise<void> => {
         const prepareUpdate = new UserEntityMysql();
 
         if (user.userName._value !== undefined)
@@ -282,12 +282,6 @@ export class MySqlUserRepository implements UserRepository {
         }
 
         await UserEntityMysql.update({ _id: idUser._value }, prepareUpdate);
-
-        const userGetter = await this.getById(idUser);
-
-        if (userGetter == null) throw new Error('');
-
-        return userGetter;
     };
 
     /**

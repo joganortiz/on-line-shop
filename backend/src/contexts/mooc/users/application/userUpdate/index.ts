@@ -1,62 +1,91 @@
-import * as imports from '../UserCreate/importsCreateUsers';
+import { type UserRepository } from '../../domain/UserRepository';
+import { RoleGetterById } from '@src/contexts/mooc/roles/domain/services/RoleGetterById';
+import { CountryGetterById } from '@src/contexts/mooc/countries/domain/services';
+import { StateGetterByIdAndIdCountry } from '@src/contexts/mooc/states/domain/services';
+import { CityGetterById } from '@src/contexts/mooc/cities/domain/services';
+import { type RoleRepository } from '@src/contexts/mooc/roles/domain';
+import { type CountryRepository } from '@src/contexts/mooc/countries/domain/CountryRepository';
+import { type StateRepository } from '@src/contexts/mooc/states/domain/StateRepository';
+import { type CityRepository } from '@src/contexts/mooc/cities/domain/CityRepository';
+import { User } from '../../domain/User';
+import {
+    ExistUserByIdentity,
+    ExistUserByUserName,
+    ExistUserByEmail,
+    ExistUserByPhone,
+    UserGetterById
+} from '../../domain/services';
+import {
+    IdentityAlreadyExistsException,
+    UserEmailAlreadyExistsException,
+    UserNameAlreadyExistsException,
+    UserPhoneAlreadyExistsException
+} from '../../domain/exceptions';
+import { type PrimitiveUser, type UserCommand } from '../../domain/interfaces';
+import { type FileSystemRepository } from '@src/contexts/shared/domain/plugins/FileSystemRepository';
+import { UserProfilePicture } from '../../domain/value-objects';
 
 export class UserUpdateUseCase {
-    private readonly _userRepository: imports.UserRepository;
-    private readonly _roleGetterById: imports.RoleGetterById;
-    private readonly _countryGetterById: imports.CountryGetterById;
-    private readonly _stateGetterById: imports.StateGetterById;
-    private readonly _cityGetterById: imports.CityGetterById;
-    private readonly _existUserByUserName: imports.ExistUserByUserName;
-    private readonly _existUserByIdentity: imports.ExistUserByIdentity;
-    private readonly _existUserByEmail: imports.ExistUserByEmail;
-    private readonly _existUserByPhone: imports.ExistUserByPhone;
-    private readonly _fileSistem: imports.FileSystemRepository;
-    private readonly _usereGetterById: imports.UserGetterById;
+    private readonly _userRepository: UserRepository;
+    private readonly _roleGetterById: RoleGetterById;
+    private readonly _countryGetterById: CountryGetterById;
+    private readonly _stateGetterByIdAndCountry: StateGetterByIdAndIdCountry;
+    private readonly _cityGetterById: CityGetterById;
+    private readonly _existUserByUserName: ExistUserByUserName;
+    private readonly _existUserByIdentity: ExistUserByIdentity;
+    private readonly _existUserByEmail: ExistUserByEmail;
+    private readonly _existUserByPhone: ExistUserByPhone;
+    private readonly _fileSistem: FileSystemRepository;
+    private readonly _usereGetterById: UserGetterById;
     constructor(
-        userRepository: imports.UserRepository,
-        roleRepository: imports.RoleRepository,
-        countryRepository: imports.CountryRepository,
-        stateRepository: imports.StateRepository,
-        cityRepository: imports.CityRepository,
-        fileSistem: imports.FileSystemRepository
+        userRepository: UserRepository,
+        roleRepository: RoleRepository,
+        countryRepository: CountryRepository,
+        stateRepository: StateRepository,
+        cityRepository: CityRepository,
+        fileSistem: FileSystemRepository
     ) {
         this._userRepository = userRepository;
-        this._roleGetterById = new imports.RoleGetterById(roleRepository);
-        this._countryGetterById = new imports.CountryGetterById(
-            countryRepository
+        this._roleGetterById = new RoleGetterById(roleRepository);
+        this._countryGetterById = new CountryGetterById(countryRepository);
+        this._stateGetterByIdAndCountry = new StateGetterByIdAndIdCountry(
+            stateRepository
         );
-        this._stateGetterById = new imports.StateGetterById(stateRepository);
-        this._cityGetterById = new imports.CityGetterById(cityRepository);
-        this._existUserByUserName = new imports.ExistUserByUserName(
-            userRepository
-        );
-        this._existUserByIdentity = new imports.ExistUserByIdentity(
-            userRepository
-        );
-        this._existUserByEmail = new imports.ExistUserByEmail(userRepository);
-        this._existUserByPhone = new imports.ExistUserByPhone(userRepository);
+        this._cityGetterById = new CityGetterById(cityRepository);
+        this._existUserByUserName = new ExistUserByUserName(userRepository);
+        this._existUserByIdentity = new ExistUserByIdentity(userRepository);
+        this._existUserByEmail = new ExistUserByEmail(userRepository);
+        this._existUserByPhone = new ExistUserByPhone(userRepository);
         this._fileSistem = fileSistem;
-        this._usereGetterById = new imports.UserGetterById(userRepository);
+        this._usereGetterById = new UserGetterById(userRepository);
     }
 
-    run = async (
-        id: string,
-        dataUser: imports.UserCommand
-    ): Promise<imports.PrimitiveUser> => {
+    run = async (id: string, dataUser: UserCommand): Promise<PrimitiveUser> => {
         const user = await this._usereGetterById.run(id);
 
         let country;
         let state;
         let city;
+        // if (dataUser.country !== undefined && dataUser.country != null) {
+        //     // get the country data
+        //     country = await this._countryGetterById.run(dataUser.country);
+
+        //     // get the state data
+        //     state = await this._stateGetterByIdAndCountry.run(dataUser.state);
+
+        //     // get the city data
+        //     city = await this._cityGetterById.run(dataUser.city);
+        // }
+
         if (dataUser.country !== undefined && dataUser.country != null) {
-            // get the country data
             country = await this._countryGetterById.run(dataUser.country);
+        }
 
-            // get the state data
-            state = await this._stateGetterById.run(dataUser.state);
-
-            // get the city data
-            city = await this._cityGetterById.run(dataUser.city);
+        if (dataUser.state !== undefined && dataUser.state != null) {
+            state = await this._stateGetterByIdAndCountry.run(
+                dataUser.state,
+                dataUser.country ?? user.country?._id._value
+            );
         }
 
         // get the role data
@@ -64,7 +93,7 @@ export class UserUpdateUseCase {
             dataUser.idRole ?? user.role._id._value
         );
 
-        const userUpdate = imports.User.fromPrimitives({
+        const userUpdate = User.fromPrimitives({
             _id: user._id._value,
             userName: dataUser.userName ?? user.userName._value,
             name: dataUser.name ?? user.name._value,
@@ -88,7 +117,7 @@ export class UserUpdateUseCase {
             userUpdate.userName._value
         );
 
-        if (existUserName) throw new imports.UserNameAlreadyExistsException();
+        if (existUserName) throw new UserNameAlreadyExistsException();
 
         // validate if the id already exists
         const existIdentity: boolean = await this._existUserByIdentity.run(
@@ -96,7 +125,7 @@ export class UserUpdateUseCase {
             userUpdate.identity?._value
         );
 
-        if (existIdentity) throw new imports.IdentityAlreadyExistsException();
+        if (existIdentity) throw new IdentityAlreadyExistsException();
 
         // validate if the email exists
         const existEmail: boolean = await this._existUserByEmail.run(
@@ -104,7 +133,7 @@ export class UserUpdateUseCase {
             userUpdate._id._value
         );
 
-        if (existEmail) throw new imports.UserEmailAlreadyExistsException();
+        if (existEmail) throw new UserEmailAlreadyExistsException();
 
         // validate if the phone exists
         const existPhone: boolean = await this._existUserByPhone.run(
@@ -112,14 +141,33 @@ export class UserUpdateUseCase {
             userUpdate.phone?._value
         );
 
-        if (existPhone) throw new imports.UserPhoneAlreadyExistsException();
+        if (existPhone) throw new UserPhoneAlreadyExistsException();
 
         // if everything goes well we save the user
-        const userUpdateGetter = await this._userRepository.update(
-            user._id,
-            userUpdate
+        await this._userRepository.update(user._id, userUpdate);
+
+        if (user.profilePicture?._value !== undefined) {
+            this._fileSistem.removeImg(user.profilePicture?._value);
+        }
+
+        if (dataUser.img !== undefined) {
+            const image = await this._fileSistem.saveImg(
+                dataUser.img,
+                'users',
+                user._id._value
+            );
+
+            await this._userRepository.updateProfileById(
+                user._id,
+                new UserProfilePicture(image)
+            );
+        }
+
+        // we get the user data again
+        const getterUserUpdate = await this._usereGetterById.run(
+            user._id._value
         );
 
-        return userUpdateGetter.toPrimitives();
+        return getterUserUpdate.toPrimitives();
     };
 }

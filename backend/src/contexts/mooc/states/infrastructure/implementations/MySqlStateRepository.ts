@@ -98,7 +98,8 @@ export class MySqlStateRepository implements StateRepository {
         const state = await StateEntityMysql.findOne({
             select: {
                 country: {
-                    _id: true
+                    _id: true,
+                    name: true
                 }
             },
             relations: {
