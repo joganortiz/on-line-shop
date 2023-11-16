@@ -2,7 +2,7 @@ import { type UserRepository } from '../../domain/UserRepository';
 import { RoleGetterById } from '@src/contexts/mooc/roles/domain/services/RoleGetterById';
 import { CountryGetterById } from '@src/contexts/mooc/countries/domain/services';
 import { StateGetterByIdAndIdCountry } from '@src/contexts/mooc/states/domain/services';
-import { CityGetterById } from '@src/contexts/mooc/cities/domain/services';
+import { CityGetterByIdAndIdStateAndIdCountry } from '@src/contexts/mooc/cities/domain/services';
 import { type RoleRepository } from '@src/contexts/mooc/roles/domain';
 import { type CountryRepository } from '@src/contexts/mooc/countries/domain/CountryRepository';
 import { type StateRepository } from '@src/contexts/mooc/states/domain/StateRepository';
@@ -24,13 +24,15 @@ import {
 import { type PrimitiveUser, type UserCommand } from '../../domain/interfaces';
 import { type FileSystemRepository } from '@src/contexts/shared/domain/plugins/FileSystemRepository';
 import { UserProfilePicture } from '../../domain/value-objects';
+import { CountrySelectFirstException } from '@src/contexts/mooc/countries/domain/exceptions';
+import { StateSelectFirstException } from '@src/contexts/mooc/states/domain/exceptions';
 
 export class UserUpdateUseCase {
     private readonly _userRepository: UserRepository;
     private readonly _roleGetterById: RoleGetterById;
     private readonly _countryGetterById: CountryGetterById;
     private readonly _stateGetterByIdAndCountry: StateGetterByIdAndIdCountry;
-    private readonly _cityGetterById: CityGetterById;
+    private readonly _cityGetterById: CityGetterByIdAndIdStateAndIdCountry;
     private readonly _existUserByUserName: ExistUserByUserName;
     private readonly _existUserByIdentity: ExistUserByIdentity;
     private readonly _existUserByEmail: ExistUserByEmail;
@@ -51,7 +53,9 @@ export class UserUpdateUseCase {
         this._stateGetterByIdAndCountry = new StateGetterByIdAndIdCountry(
             stateRepository
         );
-        this._cityGetterById = new CityGetterById(cityRepository);
+        this._cityGetterById = new CityGetterByIdAndIdStateAndIdCountry(
+            cityRepository
+        );
         this._existUserByUserName = new ExistUserByUserName(userRepository);
         this._existUserByIdentity = new ExistUserByIdentity(userRepository);
         this._existUserByEmail = new ExistUserByEmail(userRepository);
@@ -66,24 +70,43 @@ export class UserUpdateUseCase {
         let country;
         let state;
         let city;
-        // if (dataUser.country !== undefined && dataUser.country != null) {
-        //     // get the country data
-        //     country = await this._countryGetterById.run(dataUser.country);
 
-        //     // get the state data
-        //     state = await this._stateGetterByIdAndCountry.run(dataUser.state);
-
-        //     // get the city data
-        //     city = await this._cityGetterById.run(dataUser.city);
-        // }
-
+        // process if a country exists
         if (dataUser.country !== undefined && dataUser.country != null) {
             country = await this._countryGetterById.run(dataUser.country);
         }
 
-        if (dataUser.state !== undefined && dataUser.state != null) {
+        // process if a state exists
+        if (dataUser.state !== undefined && dataUser.state !== null) {
+            if (
+                (dataUser.country === undefined || dataUser.country == null) &&
+                (user.country?._id._value === undefined ||
+                    user.country?._id._value === null)
+            )
+                throw new CountrySelectFirstException();
+
+            // We check the status by id and country id
             state = await this._stateGetterByIdAndCountry.run(
                 dataUser.state,
+                dataUser.country ?? user.country?._id._value
+            );
+        }
+
+        // process if a city exists
+        if (dataUser.city !== undefined && dataUser.city !== null) {
+            if (
+                (dataUser.state === undefined || dataUser.state == null) &&
+                (user.state?._id._value === undefined ||
+                    user.state?._id._value === null) &&
+                (dataUser.country === undefined || dataUser.country == null) &&
+                (user.country?._id._value === undefined ||
+                    user.country?._id._value === null)
+            )
+                throw new StateSelectFirstException();
+
+            city = await this._cityGetterById.run(
+                dataUser.city,
+                dataUser.state ?? user.state?._id._value,
                 dataUser.country ?? user.country?._id._value
             );
         }

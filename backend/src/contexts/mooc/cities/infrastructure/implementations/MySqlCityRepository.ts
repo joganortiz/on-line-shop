@@ -4,6 +4,7 @@ import { type CityRepository } from '../../domain/CityRepository';
 import { type CityId } from '../../domain/value-objects';
 import { CityEntityMysql } from '../persistence/typeorm';
 import { type StateId } from '@src/contexts/mooc/states/domain/value-objects';
+import { type CountryId } from '@src/contexts/mooc/countries/domain/value-objects';
 
 export class MySqlCityRepository implements CityRepository {
     /**
@@ -146,5 +147,43 @@ export class MySqlCityRepository implements CityRepository {
         });
 
         return { cities, total };
+    };
+
+    /**
+     * @description list city by ID and ID state and ID country
+     * @date 11/15/2023 - 9:44:09 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(id: CityId, idState: StateId, idCountry: CountryId) => Promise<Nullable<City>>}
+     */
+    getByIdAndIdStateAndIdCountry = async (
+        id: CityId,
+        idState: StateId,
+        idCountry: CountryId
+    ): Promise<Nullable<City>> => {
+        const city = await CityEntityMysql.findOne({
+            relations: {
+                country: true,
+                state: {
+                    country: false
+                }
+            },
+            order: {
+                name: 'ASC'
+            },
+            where: {
+                _id: id._value,
+                state: {
+                    _id: idState._value
+                },
+                country: {
+                    _id: idCountry._value
+                }
+            }
+        });
+
+        if (city === null) return null;
+
+        return City.fromPrimitives(city);
     };
 }

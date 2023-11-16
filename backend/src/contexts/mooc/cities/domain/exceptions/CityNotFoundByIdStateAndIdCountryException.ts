@@ -1,8 +1,8 @@
 import { InvalidArgumentError } from '@src/contexts/shared/domain/exceptions/InvalidArgumentError';
 import { http } from '@src/contexts/shared/infrastructure/plugins/http';
 
-export class StateNotFoundException extends InvalidArgumentError {
+export class CityNotFoundByIdStateAndIdCountryException extends InvalidArgumentError {
     constructor() {
-        super('State not found', http.status.NOT_FOUND);
+        super('City no exist by id State', http.status.NOT_FOUND);
     }
 }

@@ -1,8 +1,8 @@
 import { InvalidArgumentError } from '@src/contexts/shared/domain/exceptions/InvalidArgumentError';
 import { http } from '@src/contexts/shared/infrastructure/plugins/http';
 
-export class StateNotFoundException extends InvalidArgumentError {
+export class StateSelectFirstException extends InvalidArgumentError {
     constructor() {
-        super('State not found', http.status.NOT_FOUND);
+        super('You must first select a state', http.status.BAD_REQUEST);
     }
 }

@@ -2,6 +2,7 @@ import { type Nullable } from '@src/contexts/shared/domain/Nullable';
 import { type City } from './City';
 import { type CityId } from './value-objects';
 import { type StateId } from '../../states/domain/value-objects';
+import { type CountryId } from '../../countries/domain/value-objects';
 
 export interface CityRepository {
     /**
@@ -44,4 +45,21 @@ export interface CityRepository {
         start?: number,
         limit?: number
     ) => Promise<{ total: number; cities: City[] }>;
+
+    /**
+     * @description list city by ID and ID state and ID country
+     * @date 11/15/2023 - 9:42:05 PM
+     * @author Jogan Ortiz Muñoz
+     *
+     * @type {(
+     *         id: CityId,
+     *         idState: StateId,
+     *         idCountry: CountryId
+     *     ) => Promise<Nullable<City>>}
+     */
+    getByIdAndIdStateAndIdCountry: (
+        id: CityId,
+        idState: StateId,
+        idCountry: CountryId
+    ) => Promise<Nullable<City>>;
 }

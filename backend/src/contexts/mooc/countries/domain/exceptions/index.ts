@@ -1,3 +1,4 @@
+export { CountrySelectFirstException } from './CountrySelectFirstException';
 export { TldEmptyException } from './TldEmptyException';
 export { FlagEmptyException } from './FlagEmptyException';
 export { CurrencySymbolException } from './CurrencySymbolException';

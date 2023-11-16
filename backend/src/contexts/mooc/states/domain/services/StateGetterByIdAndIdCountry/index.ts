@@ -2,6 +2,7 @@ import { CountryId } from '@src/contexts/mooc/countries/domain/value-objects';
 import { type State } from '../../State';
 import { type StateRepository } from '../../StateRepository';
 import { StateId } from '../../value-objects';
+import { StateNotFoundByIdCountryException } from '../../exceptions';
 
 export class StateGetterByIdAndIdCountry {
     private readonly _stateyRepository: StateRepository;
@@ -10,21 +11,17 @@ export class StateGetterByIdAndIdCountry {
     }
 
     async run(id: string, idCountry: string): Promise<State> {
-        if (idCountry === undefined || idCountry == null) {
-            throw new Error('Debe existir un paise primero');
-        }
-
         const stateId = new StateId(id);
         const countryId = new CountryId(idCountry);
-        const country = await this._stateyRepository.getByIdAndIdCountry(
+        const state = await this._stateyRepository.getByIdAndIdCountry(
             stateId,
             countryId
         );
 
-        if (country === null) {
-            throw new Error('State no exist by id Country');
+        if (state === null) {
+            throw new StateNotFoundByIdCountryException();
         }
 
-        return country;
+        return state;
     }
 }
