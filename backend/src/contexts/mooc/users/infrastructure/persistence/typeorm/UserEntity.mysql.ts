@@ -83,7 +83,8 @@ export class UserEntityMysql extends BaseEntity {
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci',
         unique: true,
-        select: false
+        select: false,
+        foreignKeyConstraintName: 'UNIQUE_password_user'
     })
     password: string;
 

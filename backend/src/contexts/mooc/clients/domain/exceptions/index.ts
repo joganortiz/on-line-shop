@@ -1,0 +1,12 @@
+export { ClientUserNameAlreadyExistsException } from './ClientUserNameAlreadyExistsException';
+export { ClientPhoneAlreadyExistsException } from './ClientPhoneAlreadyExistsException';
+export { ClientIdentityAlreadyExistsException } from './ClientIdentityAlreadyExistsException';
+export { ClientEmailAlreadyExistsException } from './ClientEmailAlreadyExistsException';
+export { ClientNotFoundException } from './ClientNotFoundException';
+export { ClientPasswordEmptyException } from './ClientPasswordEmptyException';
+export { ClientEmailNotValidException } from './ClientEmailNotValidException';
+export { ClientEmailEmptyException } from './ClientEmailEmptyException';
+export { ClientLastNameEmptyException } from './ClientLastNameEmptyException';
+export { ClientNameEmptyException } from './ClientNameEmptyException';
+export { ClientUserNameNotValidException } from './ClientUserNameNotValidException';
+export { ClientUserNameEmptyException } from './ClientUserNameEmptyException';

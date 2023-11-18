@@ -1,8 +1,8 @@
 import { InvalidArgumentError } from '@src/contexts/shared/domain/exceptions/InvalidArgumentError';
 import { http } from '@src/contexts/shared/infrastructure/plugins/http';
 
-export class ClientEmailEmptyException extends InvalidArgumentError {
+export class ClientUserNameEmptyException extends InvalidArgumentError {
     constructor() {
-        super('must have a valid email format', http.status.BAD_REQUEST);
+        super('Username cannot be empty', http.status.BAD_REQUEST);
     }
 }

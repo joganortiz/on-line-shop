@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1700286017018 implements MigrationInterface {
-    name = 'Init1700286017018'
+export class Init1700317975303 implements MigrationInterface {
+    name = 'Init1700317975303'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
@@ -45,7 +45,7 @@ export class Init1700286017018 implements MigrationInterface {
             CREATE TABLE \`clients\` (
                 \`_id\` varchar(36) NOT NULL,
                 \`user_name\` varchar(45) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
-                \`authorized\` enum ('0', '1') NOT NULL COMMENT '0->authorized 1->Not authorized' DEFAULT '0',
+                \`authorized\` enum ('0', '1') NOT NULL COMMENT '0->Authorized 1->Not authorized' DEFAULT '0',
                 \`authorized_date\` timestamp(0) NULL DEFAULT NULL,
                 \`name\` varchar(50) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
                 \`last_name\` varchar(50) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
@@ -60,7 +60,7 @@ export class Init1700286017018 implements MigrationInterface {
                 \`phone\` varchar(30) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
                 \`code_phone\` varchar(20) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
                 \`status\` enum ('0', '1') NOT NULL COMMENT '0->Inactive 1->Active' DEFAULT '0',
-                \`removed\` enum ('0', '1') NOT NULL COMMENT '0->Removed 1->not removed' DEFAULT '1',
+                \`removed\` enum ('0', '1') NOT NULL COMMENT '0->Removed 1->Not removed' DEFAULT '1',
                 \`profile_picture\` varchar(255) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
                 \`created_at\` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 \`updated_at\` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -114,6 +114,17 @@ export class Init1700286017018 implements MigrationInterface {
             ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci
         `);
         await queryRunner.query(`
+            CREATE TABLE \`cities\` (
+                \`_id\` varchar(36) NOT NULL,
+                \`name\` varchar(100) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
+                \`created_at\` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                \`updated_at\` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                \`state_id\` varchar(36) NOT NULL,
+                \`country_id\` varchar(36) NOT NULL,
+                PRIMARY KEY (\`_id\`)
+            ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci
+        `);
+        await queryRunner.query(`
             CREATE TABLE \`states\` (
                 \`_id\` varchar(36) NOT NULL,
                 \`name\` varchar(100) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
@@ -139,17 +150,6 @@ export class Init1700286017018 implements MigrationInterface {
                 \`flag\` varchar(200) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
                 \`created_at\` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 \`updated_at\` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                PRIMARY KEY (\`_id\`)
-            ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci
-        `);
-        await queryRunner.query(`
-            CREATE TABLE \`cities\` (
-                \`_id\` varchar(36) NOT NULL,
-                \`name\` varchar(100) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
-                \`created_at\` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                \`updated_at\` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                \`state_id\` varchar(36) NOT NULL,
-                \`country_id\` varchar(36) NOT NULL,
                 PRIMARY KEY (\`_id\`)
             ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci
         `);
@@ -198,10 +198,6 @@ export class Init1700286017018 implements MigrationInterface {
             ADD CONSTRAINT \`FK_user_role_id\` FOREIGN KEY (\`role_id\`) REFERENCES \`roles\`(\`_id\`) ON DELETE RESTRICT ON UPDATE CASCADE
         `);
         await queryRunner.query(`
-            ALTER TABLE \`states\`
-            ADD CONSTRAINT \`FK_satates_country_id\` FOREIGN KEY (\`country_id\`) REFERENCES \`countries\`(\`_id\`) ON DELETE RESTRICT ON UPDATE CASCADE
-        `);
-        await queryRunner.query(`
             ALTER TABLE \`cities\`
             ADD CONSTRAINT \`FK_cities_state_id\` FOREIGN KEY (\`state_id\`) REFERENCES \`states\`(\`_id\`) ON DELETE RESTRICT ON UPDATE CASCADE
         `);
@@ -209,17 +205,21 @@ export class Init1700286017018 implements MigrationInterface {
             ALTER TABLE \`cities\`
             ADD CONSTRAINT \`FK_cities_country_id\` FOREIGN KEY (\`country_id\`) REFERENCES \`countries\`(\`_id\`) ON DELETE RESTRICT ON UPDATE CASCADE
         `);
+        await queryRunner.query(`
+            ALTER TABLE \`states\`
+            ADD CONSTRAINT \`FK_satates_country_id\` FOREIGN KEY (\`country_id\`) REFERENCES \`countries\`(\`_id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+        `);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`
+            ALTER TABLE \`states\` DROP FOREIGN KEY \`FK_satates_country_id\`
+        `);
         await queryRunner.query(`
             ALTER TABLE \`cities\` DROP FOREIGN KEY \`FK_cities_country_id\`
         `);
         await queryRunner.query(`
             ALTER TABLE \`cities\` DROP FOREIGN KEY \`FK_cities_state_id\`
-        `);
-        await queryRunner.query(`
-            ALTER TABLE \`states\` DROP FOREIGN KEY \`FK_satates_country_id\`
         `);
         await queryRunner.query(`
             ALTER TABLE \`users\` DROP FOREIGN KEY \`FK_user_role_id\`
@@ -255,13 +255,13 @@ export class Init1700286017018 implements MigrationInterface {
             ALTER TABLE \`modules_sub\` DROP FOREIGN KEY \`FK_submodule_module_id\`
         `);
         await queryRunner.query(`
-            DROP TABLE \`cities\`
-        `);
-        await queryRunner.query(`
             DROP TABLE \`countries\`
         `);
         await queryRunner.query(`
             DROP TABLE \`states\`
+        `);
+        await queryRunner.query(`
+            DROP TABLE \`cities\`
         `);
         await queryRunner.query(`
             DROP INDEX \`IDX_450a05c0c4de5b75ac8d34835b\` ON \`users\`

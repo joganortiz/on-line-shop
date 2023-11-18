@@ -3,6 +3,6 @@ import { http } from '@src/contexts/shared/infrastructure/plugins/http';
 
 export class UserUserNameEmptyException extends InvalidArgumentError {
     constructor() {
-        super('Username is not valid', http.status.BAD_REQUEST);
+        super('Username cannot be empty', http.status.BAD_REQUEST);
     }
 }

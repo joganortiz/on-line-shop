@@ -1,10 +1,10 @@
 import { StringValueObject } from '@src/contexts/shared/domain/value-object';
 import {
-    UserUserNameEmptyException,
-    UserUserNameNotValidException
+    ClientUserNameEmptyException,
+    ClientUserNameNotValidException
 } from '../exceptions';
 
-export class UserUserName extends StringValueObject {
+export class ClientUserName extends StringValueObject {
     readonly _value: string;
     constructor(value: string) {
         super(value);
@@ -19,13 +19,13 @@ export class UserUserName extends StringValueObject {
         const isDefinite = this.ensureValueIsDefined();
 
         if (!isDefinite) {
-            throw new UserUserNameEmptyException();
+            throw new ClientUserNameEmptyException();
         }
     };
 
     private readonly isUsernameValidValue = (): void => {
         const isUsernameValid = this.validateRegExp(/^[a-z0-9-.]+$/);
 
-        if (!isUsernameValid) throw new UserUserNameNotValidException();
+        if (!isUsernameValid) throw new ClientUserNameNotValidException();
     };
 }

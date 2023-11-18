@@ -42,7 +42,7 @@ export class ClientEntityMysql extends BaseEntity {
         enum: StatusType,
         nullable: false,
         default: StatusType.INACTIVE,
-        comment: '0->authorized 1->Not authorized'
+        comment: '0->Authorized 1->Not authorized'
     })
     authorized: StatusType;
 
@@ -51,6 +51,7 @@ export class ClientEntityMysql extends BaseEntity {
         type: 'timestamp',
         precision: 0,
         nullable: true,
+        select: false,
         default: () => 'NULL'
     })
     authorizedDate: Date;
@@ -100,7 +101,8 @@ export class ClientEntityMysql extends BaseEntity {
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci',
         unique: true,
-        select: false
+        select: false,
+        foreignKeyConstraintName: 'UNIQUE_password_client'
     })
     password: string;
 
@@ -113,7 +115,7 @@ export class ClientEntityMysql extends BaseEntity {
         name: 'country_id',
         foreignKeyConstraintName: 'FK_client_country_id'
     })
-    country: CountryEntityMysql;
+    country?: CountryEntityMysql;
 
     @ManyToOne(() => StateEntityMysql, (state) => state.client, {
         onUpdate: 'CASCADE',
@@ -124,7 +126,7 @@ export class ClientEntityMysql extends BaseEntity {
         name: 'state_id',
         foreignKeyConstraintName: 'FK_client_state_id'
     })
-    state: StateEntityMysql;
+    state?: StateEntityMysql;
 
     @ManyToOne(() => CityEntityMysql, (city) => city.client, {
         onUpdate: 'CASCADE',
@@ -135,7 +137,7 @@ export class ClientEntityMysql extends BaseEntity {
         name: 'city_id',
         foreignKeyConstraintName: 'FK_client_city_id'
     })
-    city: CityEntityMysql;
+    city?: CityEntityMysql;
 
     @Column({
         type: 'varchar',
@@ -234,7 +236,7 @@ export class ClientEntityMysql extends BaseEntity {
         nullable: false,
         default: RemovedType.NOT_REMOVED,
         select: false,
-        comment: '0->Removed 1->not removed'
+        comment: '0->Removed 1->Not removed'
     })
     removed: RemovedType;
 

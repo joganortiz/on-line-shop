@@ -3,6 +3,6 @@ import { http } from '@src/contexts/shared/infrastructure/plugins/http';
 
 export class ClientEmailEmptyException extends InvalidArgumentError {
     constructor() {
-        super('must have a valid email format', http.status.BAD_REQUEST);
+        super('Email cannot be empty', http.status.BAD_REQUEST);
     }
 }

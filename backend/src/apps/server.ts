@@ -5,7 +5,7 @@ import express, {
 } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-// import helmet from 'helmet';
+import helmet from 'helmet';
 import compression from 'compression';
 import Router from 'express-promise-router';
 import errorHandler from 'errorhandler';
@@ -40,10 +40,10 @@ export class Server {
         );
         this._express.use(bodyParser.urlencoded({ extended: false }));
         this._express.use(bodyParser.json());
-        // this._express.use(helmet.xssFilter());
-        // this._express.use(helmet.noSniff());
-        // this._express.use(helmet.hidePoweredBy());
-        // this._express.use(helmet.frameguard({ action: 'sameorigin' }));
+        this._express.use(helmet.xssFilter());
+        this._express.use(helmet.noSniff());
+        this._express.use(helmet.hidePoweredBy());
+        this._express.use(helmet.frameguard({ action: 'sameorigin' }));
         this._express.use(compression());
         this._express.use(cors(CORS_OPTIONS));
         const router = Router();
