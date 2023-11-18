@@ -21,7 +21,9 @@ export class TypeOrmClientFactory {
             entities: [
                 path.join(
                     __dirname,
-                    `/../../../../mooc/**/**/infrastructure/persistence/typeorm/*.${DATABASE}.ts`
+                    `/../../../../mooc/**/**/infrastructure/persistence/typeorm/*.${DATABASE}.${
+                        PRODUCTION !== 'production' ? 'ts' : 'js'
+                    }`
                 )
             ],
             subscribers: [],

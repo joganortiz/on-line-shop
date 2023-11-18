@@ -3,6 +3,8 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
+    ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm';
@@ -12,6 +14,10 @@ import {
     RemovedType,
     StatusType
 } from '../../../../../shared/domain/typeOrm/index';
+import { CountryEntityMysql } from '../../../../countries/infrastructure/persistence/typeorm';
+import { StateEntityMysql } from '../../../../states/infrastructure/persistence/typeorm';
+import { CityEntityMysql } from '../../../../cities/infrastructure/persistence/typeorm';
+import { RoleEntityMysql } from '../../../../roles/infrastructure/persistence/typeorm';
 
 @Entity({
     name: 'clients',
@@ -30,6 +36,24 @@ export class ClientEntityMysql extends BaseEntity {
         collation: 'utf8mb4_general_ci'
     })
     userName: string;
+
+    @Column({
+        type: 'enum',
+        enum: StatusType,
+        nullable: false,
+        default: StatusType.INACTIVE,
+        comment: '0->authorized 1->Not authorized'
+    })
+    authorized: StatusType;
+
+    @CreateDateColumn({
+        name: 'authorized_date',
+        type: 'timestamp',
+        precision: 0,
+        nullable: true,
+        default: () => 'NULL'
+    })
+    authorizedDate: Date;
 
     @Column({
         type: 'varchar',
@@ -58,7 +82,7 @@ export class ClientEntityMysql extends BaseEntity {
         collation: 'utf8mb4_general_ci',
         default: () => 'NULL'
     })
-    identity: string;
+    identity?: string;
 
     @Column({
         type: 'varchar',
@@ -80,6 +104,39 @@ export class ClientEntityMysql extends BaseEntity {
     })
     password: string;
 
+    @ManyToOne(() => CountryEntityMysql, (country) => country.client, {
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
+        nullable: true
+    })
+    @JoinColumn({
+        name: 'country_id',
+        foreignKeyConstraintName: 'FK_client_country_id'
+    })
+    country: CountryEntityMysql;
+
+    @ManyToOne(() => StateEntityMysql, (state) => state.client, {
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
+        nullable: true
+    })
+    @JoinColumn({
+        name: 'state_id',
+        foreignKeyConstraintName: 'FK_client_state_id'
+    })
+    state: StateEntityMysql;
+
+    @ManyToOne(() => CityEntityMysql, (city) => city.client, {
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
+        nullable: true
+    })
+    @JoinColumn({
+        name: 'city_id',
+        foreignKeyConstraintName: 'FK_client_city_id'
+    })
+    city: CityEntityMysql;
+
     @Column({
         type: 'varchar',
         length: 55,
@@ -88,7 +145,7 @@ export class ClientEntityMysql extends BaseEntity {
         collation: 'utf8mb4_general_ci',
         default: () => 'NULL'
     })
-    address: string;
+    address?: string;
 
     @Column({
         type: 'varchar',
@@ -99,14 +156,14 @@ export class ClientEntityMysql extends BaseEntity {
         select: false,
         default: () => 'NULL'
     })
-    token: string;
+    token?: string;
 
     @Column({
         type: 'tinyint',
         name: 'failed_attempts',
         nullable: false,
         select: false,
-        default: () => '1'
+        default: 0
     })
     failedAttempts: number;
 
@@ -128,7 +185,7 @@ export class ClientEntityMysql extends BaseEntity {
         select: false,
         default: () => 'NULL'
     })
-    dateLocked: Date;
+    dateLocked?: Date;
 
     @Column({
         type: 'varchar',
@@ -138,18 +195,29 @@ export class ClientEntityMysql extends BaseEntity {
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci'
     })
-    phone: string;
+    phone?: string;
 
     @Column({
         type: 'varchar',
         name: 'code_phone',
-        length: 5,
+        length: 20,
         nullable: true,
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci',
         default: () => 'NULL'
     })
-    codePhone: string;
+    codePhone?: string;
+
+    @ManyToOne(() => RoleEntityMysql, (role) => role.client, {
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
+        nullable: false
+    })
+    @JoinColumn({
+        name: 'role_id',
+        foreignKeyConstraintName: 'FK_client_role_id'
+    })
+    role: RoleEntityMysql;
 
     @Column({
         type: 'enum',
@@ -172,24 +240,23 @@ export class ClientEntityMysql extends BaseEntity {
 
     @Column({
         type: 'varchar',
-        name: 'path_photo',
+        name: 'profile_picture',
         length: 255,
         nullable: true,
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci',
         default: () => 'NULL'
     })
-    profile: string;
+    profilePicture?: string;
 
     @CreateDateColumn({
         name: 'created_at',
         type: 'timestamp',
         precision: 0,
-        nullable: true,
-        select: true,
+        nullable: false,
         default: () => 'CURRENT_TIMESTAMP'
     })
-    created?: Date;
+    created: Date;
 
     @UpdateDateColumn({
         name: 'updated_at',
@@ -197,7 +264,7 @@ export class ClientEntityMysql extends BaseEntity {
         precision: 0,
         select: false,
         nullable: true,
-        default: () => 'CURRENT_TIMESTAMP',
+        default: () => 'NULL',
         onUpdate: 'CURRENT_TIMESTAMP'
     })
     updated?: Date;

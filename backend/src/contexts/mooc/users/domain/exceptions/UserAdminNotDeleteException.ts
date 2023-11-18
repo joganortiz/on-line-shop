@@ -3,6 +3,6 @@ import { http } from '@src/contexts/shared/infrastructure/plugins/http';
 
 export class UserAdminNotDeleteException extends InvalidArgumentError {
     constructor() {
-        super('Unable to remove root administrator', http.status.NOT_FOUND);
+        super('Unable to remove root administrator', http.status.BAD_REQUEST);
     }
 }

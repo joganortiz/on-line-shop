@@ -15,6 +15,7 @@ module.exports = {
 			"module-resolver",
 			{
 				alias: {
+					"@src": "./src",
 					"@apps": "./src/apps",
 					"@contexts": "./src/contexts",
 					"@mooc": "./src/contexts/mooc",

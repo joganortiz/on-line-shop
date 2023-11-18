@@ -8,8 +8,9 @@ import {
     UpdateDateColumn
 } from 'typeorm';
 import { PermissionRoleEntityMysql } from '../../../../permission/infrastructure/persistence/typeorm/PermissionEntity.mysql';
-import { RemovedType } from '../../../../../shared/domain/typeOrm';
+import { RemovedType, StatusType } from '../../../../../shared/domain/typeOrm';
 import { UserEntityMysql } from '../../../../users/infrastructure/persistence/typeorm';
+import { ClientEntityMysql } from '../../../../clients/infrastructure/persistence/typeorm';
 
 @Entity({
     name: 'roles',
@@ -39,9 +40,18 @@ export class RoleEntityMysql extends BaseEntity {
 
     @Column({
         type: 'enum',
+        enum: StatusType,
+        nullable: false,
+        default: StatusType.ACTIVE,
+        comment: '0->removed 1->Not removed'
+    })
+    visible: StatusType;
+
+    @Column({
+        type: 'enum',
         enum: RemovedType,
         nullable: false,
-        default: '1',
+        default: RemovedType.NOT_REMOVED,
         comment: '0->removed 1->Not removed'
     })
     removed: RemovedType;
@@ -51,6 +61,9 @@ export class RoleEntityMysql extends BaseEntity {
 
     @OneToMany(() => UserEntityMysql, (user) => user.role)
     user: PermissionRoleEntityMysql[];
+
+    @OneToMany(() => ClientEntityMysql, (client) => client.role)
+    client: ClientEntityMysql[];
 
     @CreateDateColumn({
         name: 'created_at',

@@ -1,4 +1,4 @@
-import { RemovedType } from '@contexts/shared/domain/typeOrm';
+import { RemovedType, StatusType } from '@contexts/shared/domain/typeOrm';
 import { Role, type RoleRepository } from '../../domain';
 import { RoleEntityMysql } from '../persistence/typeorm';
 import { type RoleId, type RoleName } from '../../domain/value-objects';
@@ -35,7 +35,8 @@ export class MySqlRoleRepository implements RoleRepository {
                 created: true
             },
             where: {
-                removed: RemovedType.NOT_REMOVED
+                removed: RemovedType.NOT_REMOVED,
+                visible: StatusType.ACTIVE
             },
             order: {
                 name: 'ASC'
@@ -45,7 +46,8 @@ export class MySqlRoleRepository implements RoleRepository {
 
         const total = await RoleEntityMysql.count({
             where: {
-                removed: RemovedType.NOT_REMOVED
+                removed: RemovedType.NOT_REMOVED,
+                visible: StatusType.ACTIVE
             }
         });
 

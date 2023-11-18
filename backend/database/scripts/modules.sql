@@ -1,3 +1,6 @@
+-- --------------------------------------------------------
+SET NAMES 'utf8mb4';
+
 INSERT INTO modules (`_id`,title,`order`,icon,children,created_at,updated_at) VALUES
 	 ('14008118-5d59-11ed-aa8a-00e04c360ad5','Client',2,'users','0','2022-09-25 00:00:00','2022-11-19 19:59:20'),
 	 ('1400963d-5d59-11ed-aa8a-00e04c360ad5','Users',3,'user','1','2022-09-25 00:00:00','2022-11-19 19:59:20'),

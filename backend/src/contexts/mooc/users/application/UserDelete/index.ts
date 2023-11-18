@@ -1,9 +1,7 @@
+import { type UserRepository } from '../../domain/UserRepository';
 import { UserAdminNotDeleteException } from '../../domain/exceptions';
+import { type PrimitiveUser } from '../../domain/interfaces';
 import { UserGetterById } from '../../domain/services';
-import {
-    type PrimitiveUser,
-    type UserRepository
-} from '../UserCreate/importsCreateUsers';
 
 export class UserDeleteUseCase {
     private readonly _userRepository: UserRepository;

@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1700016159187 implements MigrationInterface {
-    name = 'Init1700016159187'
+export class Init1700286017018 implements MigrationInterface {
+    name = 'Init1700286017018'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
@@ -42,10 +42,42 @@ export class Init1700016159187 implements MigrationInterface {
             ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci
         `);
         await queryRunner.query(`
+            CREATE TABLE \`clients\` (
+                \`_id\` varchar(36) NOT NULL,
+                \`user_name\` varchar(45) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
+                \`authorized\` enum ('0', '1') NOT NULL COMMENT '0->authorized 1->Not authorized' DEFAULT '0',
+                \`authorized_date\` timestamp(0) NULL DEFAULT NULL,
+                \`name\` varchar(50) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
+                \`last_name\` varchar(50) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
+                \`identity\` varchar(30) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
+                \`email\` varchar(55) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
+                \`password\` varchar(255) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
+                \`address\` varchar(55) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
+                \`token\` varchar(255) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
+                \`failed_attempts\` tinyint NOT NULL DEFAULT '0',
+                \`locked\` enum ('0', '1') NOT NULL COMMENT '0->locked 1->Not locked' DEFAULT '1',
+                \`date_locked\` timestamp(0) NULL DEFAULT NULL,
+                \`phone\` varchar(30) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
+                \`code_phone\` varchar(20) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
+                \`status\` enum ('0', '1') NOT NULL COMMENT '0->Inactive 1->Active' DEFAULT '0',
+                \`removed\` enum ('0', '1') NOT NULL COMMENT '0->Removed 1->not removed' DEFAULT '1',
+                \`profile_picture\` varchar(255) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
+                \`created_at\` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                \`updated_at\` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                \`country_id\` varchar(36) NULL,
+                \`state_id\` varchar(36) NULL,
+                \`city_id\` varchar(36) NULL,
+                \`role_id\` varchar(36) NOT NULL,
+                UNIQUE INDEX \`IDX_d1118d13c9c73a8b90a2dcf39e\` (\`password\`),
+                PRIMARY KEY (\`_id\`)
+            ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci
+        `);
+        await queryRunner.query(`
             CREATE TABLE \`roles\` (
                 \`_id\` varchar(36) NOT NULL,
                 \`name\` varchar(50) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
                 \`description\` varchar(500) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
+                \`visible\` enum ('0', '1') NOT NULL COMMENT '0->removed 1->Not removed' DEFAULT '1',
                 \`removed\` enum ('0', '1') NOT NULL COMMENT '0->removed 1->Not removed' DEFAULT '1',
                 \`created_at\` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
                 \`updated_at\` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -122,31 +154,6 @@ export class Init1700016159187 implements MigrationInterface {
             ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci
         `);
         await queryRunner.query(`
-            CREATE TABLE \`clients\` (
-                \`_id\` varchar(36) NOT NULL,
-                \`user_name\` varchar(45) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
-                \`name\` varchar(50) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
-                \`last_name\` varchar(50) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
-                \`identity\` varchar(30) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
-                \`email\` varchar(55) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
-                \`password\` varchar(255) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NOT NULL,
-                \`address\` varchar(55) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
-                \`token\` varchar(255) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
-                \`failed_attempts\` tinyint NOT NULL DEFAULT 1,
-                \`locked\` enum ('0', '1') NOT NULL COMMENT '0->locked 1->Not locked' DEFAULT '1',
-                \`date_locked\` timestamp(0) NULL DEFAULT NULL,
-                \`phone\` varchar(30) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
-                \`code_phone\` varchar(5) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
-                \`status\` enum ('0', '1') NOT NULL COMMENT '0->Inactive 1->Active' DEFAULT '0',
-                \`removed\` enum ('0', '1') NOT NULL COMMENT '0->Removed 1->not removed' DEFAULT '1',
-                \`path_photo\` varchar(255) CHARACTER SET "utf8mb4" COLLATE "utf8mb4_general_ci" NULL DEFAULT NULL,
-                \`created_at\` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
-                \`updated_at\` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                UNIQUE INDEX \`IDX_d1118d13c9c73a8b90a2dcf39e\` (\`password\`),
-                PRIMARY KEY (\`_id\`)
-            ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci
-        `);
-        await queryRunner.query(`
             ALTER TABLE \`modules_sub\`
             ADD CONSTRAINT \`FK_submodule_module_id\` FOREIGN KEY (\`module_id\`) REFERENCES \`modules\`(\`_id\`) ON DELETE RESTRICT ON UPDATE CASCADE
         `);
@@ -157,6 +164,22 @@ export class Init1700016159187 implements MigrationInterface {
         await queryRunner.query(`
             ALTER TABLE \`roles_permissions\`
             ADD CONSTRAINT \`FK_permission_submodule_id\` FOREIGN KEY (\`module_sub_id\`) REFERENCES \`modules_sub\`(\`_id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+        `);
+        await queryRunner.query(`
+            ALTER TABLE \`clients\`
+            ADD CONSTRAINT \`FK_client_country_id\` FOREIGN KEY (\`country_id\`) REFERENCES \`countries\`(\`_id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+        `);
+        await queryRunner.query(`
+            ALTER TABLE \`clients\`
+            ADD CONSTRAINT \`FK_client_state_id\` FOREIGN KEY (\`state_id\`) REFERENCES \`states\`(\`_id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+        `);
+        await queryRunner.query(`
+            ALTER TABLE \`clients\`
+            ADD CONSTRAINT \`FK_client_city_id\` FOREIGN KEY (\`city_id\`) REFERENCES \`cities\`(\`_id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+        `);
+        await queryRunner.query(`
+            ALTER TABLE \`clients\`
+            ADD CONSTRAINT \`FK_client_role_id\` FOREIGN KEY (\`role_id\`) REFERENCES \`roles\`(\`_id\`) ON DELETE RESTRICT ON UPDATE CASCADE
         `);
         await queryRunner.query(`
             ALTER TABLE \`users\`
@@ -211,6 +234,18 @@ export class Init1700016159187 implements MigrationInterface {
             ALTER TABLE \`users\` DROP FOREIGN KEY \`FK_user_country_id\`
         `);
         await queryRunner.query(`
+            ALTER TABLE \`clients\` DROP FOREIGN KEY \`FK_client_role_id\`
+        `);
+        await queryRunner.query(`
+            ALTER TABLE \`clients\` DROP FOREIGN KEY \`FK_client_city_id\`
+        `);
+        await queryRunner.query(`
+            ALTER TABLE \`clients\` DROP FOREIGN KEY \`FK_client_state_id\`
+        `);
+        await queryRunner.query(`
+            ALTER TABLE \`clients\` DROP FOREIGN KEY \`FK_client_country_id\`
+        `);
+        await queryRunner.query(`
             ALTER TABLE \`roles_permissions\` DROP FOREIGN KEY \`FK_permission_submodule_id\`
         `);
         await queryRunner.query(`
@@ -218,12 +253,6 @@ export class Init1700016159187 implements MigrationInterface {
         `);
         await queryRunner.query(`
             ALTER TABLE \`modules_sub\` DROP FOREIGN KEY \`FK_submodule_module_id\`
-        `);
-        await queryRunner.query(`
-            DROP INDEX \`IDX_d1118d13c9c73a8b90a2dcf39e\` ON \`clients\`
-        `);
-        await queryRunner.query(`
-            DROP TABLE \`clients\`
         `);
         await queryRunner.query(`
             DROP TABLE \`cities\`
@@ -242,6 +271,12 @@ export class Init1700016159187 implements MigrationInterface {
         `);
         await queryRunner.query(`
             DROP TABLE \`roles\`
+        `);
+        await queryRunner.query(`
+            DROP INDEX \`IDX_d1118d13c9c73a8b90a2dcf39e\` ON \`clients\`
+        `);
+        await queryRunner.query(`
+            DROP TABLE \`clients\`
         `);
         await queryRunner.query(`
             DROP TABLE \`roles_permissions\`
