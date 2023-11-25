@@ -1,0 +1,30 @@
+<div class="header-container container-xxl">
+    <app-header />
+</div>
+<div class="main-container " id="container">
+    <div class="overlay"></div>
+    <div class="search-overlay"></div>
+
+    <!-- sidebar -->
+    <div class="sidebar-wrapper sidebar-theme">
+        <app-sidebar />
+    </div>
+
+    <!-- content -->
+    <div id="content" class="main-content">
+        <div class="layout-px-spacing">
+            <div class="middle-content container-xxl p-0">
+                <a routerLink="roles" routerLinkActive="bg-blue-800" > roles </a>
+                <a routerLink="users" routerLinkActive="bg-blue-800"> users </a>
+                <a routerLink="dashboard" routerLinkActive="bg-blue-800"> dashboard </a>
+
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+        <div class="footer-wrapper">
+            <div class="footer-section f-section-1">
+                <p class="">Copyright © <span class="dynamic-year">2022</span> <a target="_blank" href="https://designreset.com/cork-admin/">Sykeyns</a>. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</div>

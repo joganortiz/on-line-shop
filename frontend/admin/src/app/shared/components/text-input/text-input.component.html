@@ -1,0 +1,31 @@
+<div class="mb-2">
+    @if (title) {
+        <label class="form-label"> {{title}}</label>
+    }
+
+    <div class="input-group">
+        <input 
+            [ngClass]="['form-control form-control-sm ' + cssClass ]"
+            [placeholder]="placeholder"
+            autocomplete="off"
+            (paste)="paste"
+            (drop)="paste"
+            (input)="chancheText($event)"
+            (blur)="onTouchInput()"
+            [value]="value"
+            [type]="type"
+        />
+
+        <span class="input-group-text" >
+            <div class="icon icon-user-3"></div>
+        </span>
+    </div>
+
+    @if (errorMsg) {
+        <small>
+            <span class="text-danger">
+                {{errorMsg}}
+            </span>
+        </small>
+    }
+</div>

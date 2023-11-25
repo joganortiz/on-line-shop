@@ -1,85 +1,85 @@
-<div class="card mt-3 mb-3">
+<div class="card mt-3 mb-3 auth-login-card">
     <div class="card-body">
-
-        <div class="row">
-            <div class="col-md-12 mb-3">
-                
-                <h2>Sign In</h2>
-                <p>Enter your email and password to login</p>
-                
-            </div>
-            <div class="col-md-12">
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control">
+            <div class="row">
+                <div class="col-md-12 mb-3 text-center">
+                    
+                    <h2>Sign In</h2>
+                    <p>Enter your email and password to login</p>
+                    
                 </div>
-            </div>
-            <div class="col-12">
-                <div class="mb-4">
-                    <label class="form-label">Password</label>
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="mb-3">
-                    <div class="form-check form-check-primary form-check-inline">
-                        <input class="form-check-input me-3" type="checkbox" id="form-check-default">
-                        <label class="form-check-label" for="form-check-default">
-                            Remember me
-                        </label>
+                <form [formGroup]="loginForm" (ngSubmit)="login()" className="col-md-12 inputForm" id="loginForm">
+                    <div class="col-md-12">
+                        <app-text-input
+                            type="text"
+                            id="username"
+                            title="Username"
+                            placeholder="Enter username or e-mail"
+                            formControlName="username"
+                            [errorMsg] = "errosUsername"
+                            [maxLength]="30"
+                            [paste]="false"
+                        />
                     </div>
-                </div>
-            </div>
-            
-            <div class="col-12">
-                <div class="mb-4">
-                    <button class="btn btn-secondary w-100">SIGN IN</button>
-                </div>
-            </div>
-            
-            <div class="col-12 mb-4">
-                <div class="">
-                    <div class="seperator">
-                        <hr>
-                        <div class="seperator-text"> <span>Or continue with</span></div>
+                    <div class="col-12">
+                        <app-text-input
+                            type="password"
+                            id="password"
+                            title="Password"
+                            placeholder="Enter password"
+                            formControlName="password"
+                            [errorMsg] = "errorsPassword"
+                            [maxLength]="20"
+                            [paste]="false"
+                        />
                     </div>
-                </div>
-            </div>
-            
-            <div class="col-sm-4 col-12">
-                <div class="mb-4">
-                    <button class="btn  btn-social-login w-100 ">
-                        <img src="../src/assets/img/google-gmail.svg" alt="" class="img-fluid">
-                        <span class="btn-text-inner">Google</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="col-sm-4 col-12">
-                <div class="mb-4">
-                    <button class="btn  btn-social-login w-100">
-                        <img src="../src/assets/img/github-icon.svg" alt="" class="img-fluid">
-                        <span class="btn-text-inner">Github</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="col-sm-4 col-12">
-                <div class="mb-4">
-                    <button class="btn  btn-social-login w-100">
-                        <img src="../src/assets/img/twitter.svg" alt="" class="img-fluid">
-                        <span class="btn-text-inner">Twitter</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="col-12">
-                <div class="text-center">
-                    <p class="mb-0">Dont't have an account ? <a href="javascript:void(0);" class="text-warning">Sign Up</a></p>
-                </div>
-            </div>
-            
-        </div>
+                    <div class="col-12">
+                        <div class="mb-2">
+                            <a class="w-auto" >Did you forget your password</a>
+                        </div>
+                    </div>
         
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <div class="form-check form-check-primary form-check-inline">
+                                <input class="form-check-input me-3" type="checkbox" id="form-check-default" formControlName="remember">
+                                <label class="form-check-label" for="form-check-default">
+                                    Remember me
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <app-button  color="success" cssClass="w-100" [disabled]="!loginForm.valid">SIGN IN</app-button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 mb-2">
+                        <div class="">
+                            <div class="seperator">
+                                <hr>
+                                <div class="seperator-text"> <span>Or continue with</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <div class="mb-2">
+                            <button type="button" class="btn  btn-social-login w-100 ">
+                                <img src="assets/img/google-gmail.svg" alt="" class="img-fluid">
+                                <span class="btn-text-inner">Google</span>
+                            </button>
+                        </div>
+                    </div>
+        
+                    <div class="col-12">
+                        <div class="text-center">
+                            <p class="mb-0">Dont't have an account ? <a href="javascript:void(0);" class="text-warning">Sign Up</a></p>
+                        </div>
+                    </div>
+                
+                </form>
+            </div>
     </div>
 </div>
