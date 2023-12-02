@@ -1,0 +1,45 @@
+<div class="row layout-top-spacing">
+    <div class="col-12 d-flex justify-content-end">
+        <div class="mb-1">
+            <button class="btn btn-sm btn-primary" title="Create new user" data-bs-toggle="modal" data-bs-target="#RoleUpdateCreate" data-control="createUpdateUsers">Create</button>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header card-header-icon">
+                <div class="card-header-icon">
+                    <span class="btn btn-sm btn-icon btn-rounded bg-primary" style="padding: 0;" (click)="ShowHide()">
+                        <img [src]="iconUrlShowHide" [title]="titleIconShowHide" width="18">
+                        <!-- @if (showIconCard) {
+                            <i class="pi pi-minus-circle"></i>
+                        }@else {
+                            <i class="pi pi-plus-circle"></i>
+                        } -->
+                    </span>
+                </div>
+                dfsdfdsf
+            </div>
+            <div class='card-body' id="toggleSlide">
+                <app-table />
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="RoleUpdateCreate" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" >title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        
+                    </button>
+                </div>
+                <div class="modal-body">
+                    dsfsdfsd
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

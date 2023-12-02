@@ -36,35 +36,3 @@
     fill: rgba(255, 178, 178, 0.342) !important;
 }
 
-.card .card-body.active {
-    overflow: hidden;
-    animation-name: slide;
-    animation-duration: .5s;
-}
-
-.card .card-body.inactive {
-    height: 0;
-    overflow: hidden;
-    animation-name: slide-inactive;
-    animation-duration: .5s;
-}
-
-@keyframes slide {
-    from {height: 0;}
-    to {height: 100%;}
-}
-
-@keyframes slide-inactive {
-    from {height: 100%; }
-    to {height: 0;} 
-}
-
-
-
-.toggleSlide {
-    opacity: 1; /* En vez de display para crear el efecto de desvanecimiento */
-    overflow: hidden;
-    transition: height 1s, opacity 1s; /* Transition para la animación */
-}
-
-
