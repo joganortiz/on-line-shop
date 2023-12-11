@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { SidenavComponent } from '../../shared/sidenav/sidenav.component';
+import { HeaderComponent } from '../../shared/header/header.component';
 
 interface SideNavToggle {
   screenWidth: number;
@@ -11,7 +12,7 @@ interface SideNavToggle {
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, SidenavComponent, RouterOutlet ],
+  imports: [CommonModule, SidenavComponent, RouterOutlet,HeaderComponent ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })

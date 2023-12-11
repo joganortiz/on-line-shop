@@ -3,63 +3,52 @@
         <button class="logo" (click)="toggleCollapsed()">A</button>
         @if (collapsed) {
             <div class="logo-text" @fadeInOut>Angular</div>
-            <button class="btn-close" @fadeInOut @rotate>
+            <button class="btn-close" @fadeInOut @rotate (click)="closeSidenav()">
                 <i class="pi pi-times close-icon"></i>
             </button>
         }
     </div>
 
-    <!-- <ul class="sidenav-nav">
-        @for (item of navData; track $index) {
-            <li class="sidenav-nav-item">
-                <a class="sidenav-nav-link" [routerLink]="item.routeLink" 
-                    routerLinkActive="active"
-                    [routerLinkActiveOptions]="{exact: true}"
-                > 
-                    <i [class]="item.icon" class="sidenav-link-icon"></i>
-                    @if (collapsed) {
-                        <span class="sidenav-link-text" @fadeInOut> {{item.label}}</span>
-                    }
-                </a>
-            </li>
-        }
-    </ul> -->
-
-    <ul class="sidenav-nav">
-        @for (item of navData; track $index) {
-            <li class="sidenav-nav-item">
-                @if(item.items && item.items.length > 0) {
-                    <a class="sidenav-nav-link" (click)="onHandleClick(item)"
-                    > 
-                        <i [class]="item.icon" class="sidenav-link-icon"></i>
+    <div class="scrollwrap scrollwrap_delayed">
+        <ul class="sidenav-nav">
+            @for (item of navData; track $index) {
+                <li class="sidenav-nav-item">
+                    @if(item.items && item.items.length > 0) {
+                        <a class="sidenav-nav-link" (click)="onHandleClick(item)"
+                            [ngClass]="getActiveClass(item)"
+                        > 
+                            <i [class]="item.icon" class="sidenav-link-icon"></i>
+                            @if (collapsed) {
+                                <span class="sidenav-link-text" @fadeInOut> {{item.label}}</span>
+                            }
+                            @if(item.items && collapsed) {
+                                <i class="manu-collapse-icon" [ngClass]="!item.expanded ? 'pi pi-angle-right' : 'pi pi-angle-down'"></i>
+                            }
+                        </a>
+    
                         @if (collapsed) {
-                            <span class="sidenav-link-text" @fadeInOut> {{item.label}}</span>
+                            <div> 
+                                <app-menu-sidenav
+                                    [data]="item"
+                                    [collapsed] = "collapsed"
+                                    [multiple]="multiple"
+                                    [expanded]="item.expanded"
+                                ></app-menu-sidenav>
+                            </div>
                         }
-                        @if(item.items && collapsed) {
-                            <i class="manu-collapse-icon" [ngClass]="!item.expanded ? 'pi pi-angle-right' : 'pi pi-angle-down'"></i>
-                        }
-                    </a>
-
-                    @if (collapsed ) {
-                        <div>
-                            <app-menu-sidenav
-                                [collapsed] = "collapsed"
-                                [multiple]="multiple"
-                            ></app-menu-sidenav>
-                        </div>
+                    }@else {
+                        <a class="sidenav-nav-link" [routerLink]="item.routeLink" 
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{exact: true}"
+                        > 
+                            <i [class]="item.icon" class="sidenav-link-icon"></i>
+                            @if (collapsed) {
+                                <span class="sidenav-link-text" @fadeInOut> {{item.label}}</span>
+                            }
+                        </a>
                     }
-                }@else {
-                    <a class="sidenav-nav-link" [routerLink]="item.routeLink" 
-                        routerLinkActive="active"
-                        [routerLinkActiveOptions]="{exact: true}"
-                    > 
-                        <i [class]="item.icon" class="sidenav-link-icon"></i>
-                        @if (collapsed) {
-                            <span class="sidenav-link-text" @fadeInOut> {{item.label}}</span>
-                        }
-                    </a>
-                }
-            </li>
-        }
-    </ul>
+                </li>
+            }
+        </ul>
+    </div>
 </div>

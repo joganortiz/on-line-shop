@@ -1,16 +1,18 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { INavbarData } from './interfaces';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { fadeInOut } from '../nav-data';
 
 @Component({
   selector: 'app-menu-sidenav',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './menu-sidenav.component.html',
-  styleUrl: './menu-sidenav.component.css',
+  styleUrl: '../sidenav.component.css',
   animations: [
+    fadeInOut,
     trigger('submenu', [
       state('hidden', style({
         height: '0',
@@ -34,7 +36,7 @@ export class MenuSidenavComponent {
 
   @Input() collapsed: boolean = false;
   @Input() animating: boolean = false;
-  @Input() expanded: boolean = false;
+  @Input() expanded: boolean|undefined = false;
   @Input() multiple: boolean = false;
 
   onHandleClick(item: any): void {

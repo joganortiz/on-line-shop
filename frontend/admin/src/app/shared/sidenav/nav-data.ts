@@ -1,4 +1,7 @@
-export const navbarData = [
+import { animate, style, transition, trigger } from "@angular/animations";
+import { INavbarData } from "./menu-sidenav/interfaces";
+
+export const navbarData: INavbarData[] = [
     {
         routeLink: '/admin',
         icon: 'pi pi-home',
@@ -19,7 +22,7 @@ export const navbarData = [
                 label: 'Users',
             },
             {
-                routeLink: '/admin/roles',
+                routeLink: '/admin/users/roles',
                 label: 'Roles',
             }
         ]
@@ -27,7 +30,17 @@ export const navbarData = [
     {
         routeLink: '/admin/products',
         icon: 'pi pi-shopping-bag',
-        label: 'Store'
+        label: 'Store',
+        items: [
+            {
+                routeLink: '/admin/category',
+                label: 'Categories',
+            },
+            {
+                routeLink: '/admin/products',
+                label: 'Products',
+            }
+        ]
     },
     {
         routeLink: '/admin/settings',
@@ -36,3 +49,14 @@ export const navbarData = [
     },
 
 ];
+
+export const fadeInOut = trigger('fadeInOut', [
+    transition(':enter', [
+      style({opacity: 0}),
+      animate('350ms', style({opacity: 1}))
+    ]),
+    transition(':leave', [
+      style({opacity: 1}),
+      animate('50ms', style({opacity: 0}))
+    ])
+  ])

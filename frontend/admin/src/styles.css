@@ -9,3 +9,13 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
+
+html {
+    font-size: 0.875rem;
+}
+
+.p-tieredmenu-overlay {
+    position: absolute;
+    right: 0;
+    left: unset!important;
+}

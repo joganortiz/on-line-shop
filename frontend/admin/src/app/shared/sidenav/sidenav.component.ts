@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { navbarData } from './nav-data';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { fadeInOut, navbarData } from './nav-data';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { MenuSidenavComponent } from './menu-sidenav/menu-sidenav.component';
 import { INavbarData } from './menu-sidenav/interfaces';
@@ -18,20 +18,11 @@ interface SideNavToggle {
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.css',
   animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('350ms', style({opacity: 1}))
-      ]),
-      transition(':leave', [
-        style({opacity: 1}),
-        animate('50ms', style({opacity: 0}))
-      ])
-    ]),
+    fadeInOut,
     trigger('rotate', [
       transition(':enter', [
-        animate('1000ms',  keyframes([
-          style({transform: 'totate(0deg)', offset: '0'}),
+        animate('600ms',  keyframes([
+          style({transform: 'rotate(0deg)', offset: '0'}),
           style({transform: 'rotate(2turn)', offset: '1'})
         ]))
       ])
@@ -44,6 +35,16 @@ export class SidenavComponent implements OnInit {
   screenWidth: number = 0;
   navData: INavbarData[] = navbarData;
   multiple: boolean = false;
+
+  constructor(private router: Router){
+    for (let index = 0; index < this.navData.length; index++) {
+      const element = this.navData[index];
+      
+      if(this.getActiveClass(element) == "active") {
+        this.navData[index].expanded = true
+      }
+    }
+  }
 
   @HostListener("window:resize", ['$event'])
   onResize(event: any): void {
@@ -58,6 +59,10 @@ export class SidenavComponent implements OnInit {
     if (typeof window !== 'undefined') {
       this.screenWidth = window?.innerWidth;
     }
+  }
+
+  getActiveClass(data: INavbarData): string {
+    return this.router.url.includes(data.routeLink) ? 'active' : '';
   }
 
   toggleCollapsed(): void {

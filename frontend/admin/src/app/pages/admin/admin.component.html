@@ -1,6 +1,11 @@
 
 <app-sidenav (onToggleSideNav)="onToggleSideNav($event)"></app-sidenav>
 
+<app-header
+    [collapsed]="isSideNavCollapsed"
+    [screenWidth]="screenWidth"
+
+></app-header>
 
 <div class="body" [ngClass]="getBodyClass()">
     <router-outlet></router-outlet>
