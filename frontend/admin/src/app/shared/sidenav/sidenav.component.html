@@ -1,54 +1,83 @@
-<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed':''">
-    <div class="logo-container">
-        <button class="logo" (click)="toggleCollapsed()">A</button>
-        @if (collapsed) {
-            <div class="logo-text" @fadeInOut>Angular</div>
-            <button class="btn-close" @fadeInOut @rotate (click)="closeSidenav()">
-                <i class="pi pi-times close-icon"></i>
-            </button>
-        }
-    </div>
+<div class="crancy-smenu" [class]="collapsed ? 'crancy-close' : ''" id="CrancyMenu">
+    <!-- Admin Menu -->
+    <div class="admin-menu" [class]="expand && collapsed ? 'no-overflow':''">
 
-    <div class="scrollwrap scrollwrap_delayed">
-        <ul class="sidenav-nav">
-            @for (item of navData; track $index) {
-                <li class="sidenav-nav-item">
-                    @if(item.items && item.items.length > 0) {
-                        <a class="sidenav-nav-link" (click)="onHandleClick(item)"
-                            [ngClass]="getActiveClass(item)"
-                        > 
-                            <i [class]="item.icon" class="sidenav-link-icon"></i>
-                            @if (collapsed) {
-                                <span class="sidenav-link-text" @fadeInOut> {{item.label}}</span>
-                            }
-                            @if(item.items && collapsed) {
-                                <i class="manu-collapse-icon" [ngClass]="!item.expanded ? 'pi pi-angle-right' : 'pi pi-angle-down'"></i>
-                            }
-                        </a>
-    
-                        @if (collapsed) {
-                            <div> 
+        <!-- Logo -->
+        <div class="logo crancy-sidebar-padding pd-right-0">
+            <a class="crancy-logo" href="index.html">
+                <!-- Logo for Default -->
+                <img class="crancy-logo__main" src="assets/img/logo.png" alt="#">                
+                <!-- Logo for Dark Version -->
+                <img class="crancy-logo__main--small" src="assets/img/logo-icon.png" alt="#">
+            </a>
+            
+            <div (click)="toggleCollapsed()" id="crancy__sicon" class="crancy__sicon close-icon">
+                <img src="assets/img/arrow-icon.svg">
+            </div>
+        </div>
+
+        <!-- Main Menu -->
+        <!-- <div class="admin-menu__one crancy-sidebar-padding" style="height: calc(100vh - 80px);overflow: auto;"> -->
+        <div class="admin-menu__one crancy-sidebar-padding scrollwrap scrollwrap_delayed" [style]="!collapsed ? '' : 'overflow: visible'">
+            <!-- Nav Menu -->
+            <div class="menu-bar mg-top-20">
+                <ul id="CrancyMenu" class="menu-bar__one crancy-dashboard-menu">
+                    @for (item of navData; track $index) {
+                        @if(item.items && item.items.length > 0) {
+                            <li (click)="onHandleClick(item)" style="gap: 0;">
+                                <a [class]="item.expanded? '':'collapsed'" data-bs-toggle="collapse" [attr.data-bs-target]="'#menu-item__'+item.label.toLowerCase()" aria-expanded="true">
+                                    <span class="menu-bar__text">
+                                        <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                            <svg class="crancy-svg-icon" width="24" height="24" viewBox="0 0 24 24"
+                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M2 4C2 2.89543 2.89543 2 4 2H8C9.10457 2 10 2.89543 10 4V8C10 9.10457 9.10457 10 8 10H4C2.89543 10 2 9.10457 2 8V4Z"
+                                                    stroke-width="1.5" />
+                                                <path
+                                                    d="M22 6C22 8.20914 20.2091 10 18 10C15.7909 10 14 8.20914 14 6C14 3.79086 15.7909 2 18 2C20.2091 2 22 3.79086 22 6Z"
+                                                    stroke-width="1.5" />
+                                                <path
+                                                    d="M10 18C10 20.2091 8.20914 22 6 22C3.79086 22 2 20.2091 2 18C2 15.7909 3.79086 14 6 14C8.20914 14 10 15.7909 10 18Z"
+                                                    stroke-width="1.5" />
+                                                <path
+                                                    d="M14 16C14 14.8954 14.8954 14 16 14H20C21.1046 14 22 14.8954 22 16V20C22 21.1046 21.1046 22 20 22H16C14.8954 22 14 21.1046 14 20V16Z"
+                                                    stroke-width="1.5" />
+                                            </svg>
+                                        </span>
+                                        <span class="menu-bar__name">{{item.label}}</span>
+                                    </span>
+                                    <span class="crancy__toggle"></span>
+                                </a>
+                                <!-- Dropdown Menu -->
                                 <app-menu-sidenav
                                     [data]="item"
-                                    [collapsed] = "collapsed"
+                                    [collapsed]="collapsed"
                                     [multiple]="multiple"
                                     [expanded]="item.expanded"
-                                ></app-menu-sidenav>
-                            </div>
+                                    [id]="'menu-item__'+item.label.toLowerCase()"
+                                ></app-menu-sidenav>                                
+                                <!-- [@submenu]="item.expanded ? {value: 'visible', params: {transitionParams: '400ms cubic-bezier(0.86, 0, 0.07, 1)'}, heigth: '*'} : {value: 'hidden', params: {transitionParams: '400ms cubic-bezier(0.86, 0, 0.07, 1)'}, heigth: '0'}" -->
+                            </li>
+                        }@else {
+                            <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                                <a class="collapsed" [routerLink]="item.routeLink">
+                                    <span class="menu-bar__text">
+                                        <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                            <svg class="crancy-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M21.8025 10.0128C21.0104 6.08419 17.9158 2.98956 13.9872 2.19745C12.9045 1.97914 12 2.89543 12 4V10C12 11.1046 12.8954 12 14 12H20C21.1046 12 22.0209 11.0955 21.8025 10.0128Z" stroke-width="1.5" stroke-linejoin="round" />
+                                                <path d="M9 4.22314C4.99202 5.1326 2 8.71695 2 13.0001C2 17.9707 6.02944 22.0001 11 22.0001C15.2832 22.0001 18.8675 19.0081 19.777 15.0001" stroke-width="1.5" stroke-linecap="round" />
+                                            </svg>
+                                        </span>
+                                        <span class="menu-bar__name">{{item.label}}</span>
+                                    </span>
+                                </a>
+                            </li>
                         }
-                    }@else {
-                        <a class="sidenav-nav-link" [routerLink]="item.routeLink" 
-                            routerLinkActive="active"
-                            [routerLinkActiveOptions]="{exact: true}"
-                        > 
-                            <i [class]="item.icon" class="sidenav-link-icon"></i>
-                            @if (collapsed) {
-                                <span class="sidenav-link-text" @fadeInOut> {{item.label}}</span>
-                            }
-                        </a>
                     }
-                </li>
-            }
-        </ul>
+                </ul>
+            </div>
+            <!-- End Nav Menu -->
+        </div>
     </div>
+    <!-- End Admin Menu -->
 </div>

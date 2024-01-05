@@ -1,43 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { INavbarData } from './interfaces';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { fadeInOut } from '../nav-data';
+import { Component,  Input } from '@angular/core';
+import { INavbarData } from '../../../interfaces/menu-sidenav';
 
 @Component({
   selector: 'app-menu-sidenav',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [],
   templateUrl: './menu-sidenav.component.html',
-  styleUrl: '../sidenav.component.css',
-  animations: [
-    fadeInOut,
-    trigger('submenu', [
-      state('hidden', style({
-        height: '0',
-        overflow: 'hidden'
-      })),
-      state('visible', style({
-        height: '*'
-      })),
-      transition('visible <=> hidden', [style({overflow: "hidden"}), animate('{{transitionParams}}')]),
-      transition('void => *', animate(0))
-    ])
-  ]
+  styleUrl: './menu-sidenav.component.css'
 })
 export class MenuSidenavComponent {
-  @Input() data: INavbarData = {
-    routeLink: '',
-    icon: '',
-    label: '',
-    items: []
-  }
+  @Input({ required: true}) data!: INavbarData;
+  @Input({ required: true}) collapsed: boolean = false;
+  @Input({ required: true}) expanded: boolean|undefined = false;
+  @Input({ required: true}) multiple: boolean = false;
+  @Input({ required: true}) id!: string;
 
-  @Input() collapsed: boolean = false;
-  @Input() animating: boolean = false;
-  @Input() expanded: boolean|undefined = false;
-  @Input() multiple: boolean = false;
 
   onHandleClick(item: any): void {
     if(!this.multiple) {
@@ -48,7 +25,6 @@ export class MenuSidenavComponent {
           if(item !== element && element.expanded) {
             this.data.items[index].expanded = false;
           }
-          
         }
       }
     }

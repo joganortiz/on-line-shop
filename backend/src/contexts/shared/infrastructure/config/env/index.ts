@@ -21,7 +21,7 @@ const env = convict({
         doc: 'list array url accept cors',
         format: Array,
         env: 'CORS',
-        default: ['http://localhost:5173/']
+        default: ['http://localhost:4200']
     },
     keyJwt: {
         doc: 'jwt token.',

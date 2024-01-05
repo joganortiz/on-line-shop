@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from "@angular/animations";
-import { INavbarData } from "./menu-sidenav/interfaces";
+import { INavbarData } from "../../interfaces/menu-sidenav";
 
 export const navbarData: INavbarData[] = [
     {
@@ -13,7 +13,7 @@ export const navbarData: INavbarData[] = [
         label: 'Client'
     },
     {
-        routeLink: '/admin/users',
+        routeLink: '',
         icon: 'pi pi-users',
         label: 'Users',
         items: [
@@ -28,7 +28,7 @@ export const navbarData: INavbarData[] = [
         ]
     },
     {
-        routeLink: '/admin/products',
+        routeLink: '',
         icon: 'pi pi-shopping-bag',
         label: 'Store',
         items: [

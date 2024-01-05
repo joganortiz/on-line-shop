@@ -1,0 +1,39 @@
+@if(collapsed && data.items && data.items.length > 0) {
+    <ul class="sublevel-nav" [@submenu]="expanded ? {value: 'visible', params: {transitionParams: '400ms cubic-bezier(0.86, 0, 0.07, 1)'}, heigth: '*'} : {value: 'hidden', params: {transitionParams: '400ms cubic-bezier(0.86, 0, 0.07, 1)'}, heigth: '0'}">
+        @for (item of data.items; track $index) {
+            <li class="sublevel-nav-item">
+                @if (item.items && item.items.length > 0) {
+                    <a class="sublevel-nav-link" (click)="onHandleClick(item)">
+                        <i class="pi pi-circle-fill sublevel-link-icon"></i>
+                        @if (collapsed) {
+                            <span class="sublevel-link-text" @fadeInOut> {{item.label}}</span>
+                        }
+    
+                        @if(item.items && collapsed) {
+                            <i [ngClass]="!item.expanded ? 'pi pi-angle-right' : 'pi pi-angle-down'"></i>
+                        }
+                    </a>
+                    <div>
+                        <app-menu-sidenav
+                            [collapsed]="collapsed"
+                            [multiple]="multiple"
+                            [expanded]="item.expanded ? item.expanded : false"
+
+                        ></app-menu-sidenav>
+                    </div>
+                }@else {
+                    <a class="sublevel-nav-link"
+                        [routerLink]="item.routeLink"
+                        routerLinkActive="active-sublevel"
+                        [routerLinkActiveOptions]="{exact: true}"
+                    >
+                        <i class="pi pi-circle-fill sublevel-link-icon"></i>
+                        @if (collapsed) {
+                            <span class="sublevel-link-text" @fadeInOut> {{item.label}}</span>
+                        }
+                    </a>
+                }
+            </li>
+        }
+    </ul>
+}
