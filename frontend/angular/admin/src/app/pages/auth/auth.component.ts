@@ -12,6 +12,6 @@ import { Router } from '@angular/router';
 export class AuthComponent {
   private router = inject(Router);
   login(): void {
-    this.router.navigateByUrl('/admin');
+    this.router.navigateByUrl('/admin/');
   }
 }

@@ -1,12 +1,15 @@
-import { AfterContentChecked, AfterViewChecked, AfterViewInit, Component, OnChanges, OnInit, inject } from '@angular/core';
-import { SidenavComponent } from '../../shared/sidenav/sidenav.component';
+import { Component, OnInit, inject } from '@angular/core';
+import { SidenavComponent } from '../../shared/components/sidenav/sidenav.component';
 import { AppService } from '../../services/system/app.service';
+import { HeaderComponent } from '../../shared/components/header/header.component';
+import { RouterOutlet } from '@angular/router';
+import { LoadComponent } from '../../shared/components/load/load.component';
 
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [SidenavComponent],
+  imports: [RouterOutlet, HeaderComponent, SidenavComponent, LoadComponent],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })

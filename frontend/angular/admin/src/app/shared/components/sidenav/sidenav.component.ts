@@ -1,6 +1,5 @@
 import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { MenuSidenavComponent } from './menu-sidenav/menu-sidenav.component';
 
 @Component({
   selector: 'app-sidenav',

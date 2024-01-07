@@ -1,4 +1,6 @@
 import { Injectable, inject } from '@angular/core';
+import PerfectScrollbar from 'perfect-scrollbar';
+
 import { SidebarFunctionalityService } from './sidebar-functionality.service';
 import { DesktopResolutionService } from './desktop-resolution.service';
 import { MobileResolutionService } from './mobile-resolution.service';
@@ -38,6 +40,18 @@ export class AppService {
 
     // sidebar
     this.sidebar.init();
+
+    if (typeof document != "undefined"){
+      
+      if(document.querySelector('.menu-categories')) {
+        new PerfectScrollbar('.menu-categories', {
+            wheelSpeed:.2,
+            swipeEasing:!0,
+            minScrollbarLength:40,
+            maxScrollbarLength:300
+        });
+      }
+    }
   }
 
 }
