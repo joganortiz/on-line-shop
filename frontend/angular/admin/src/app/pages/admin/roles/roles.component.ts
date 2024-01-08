@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoadComponent } from '../../../shared/components/load/load.component';
 import { TableModule } from 'primeng/table';
@@ -8,11 +8,14 @@ import { MenuItem } from 'primeng/api';
 import { formatearFechaHora } from '../../../shared/helpers/date';
 import { DropdownModule } from 'primeng/dropdown';
 import {TagModule} from 'primeng/tag'
+import { alertSweet, alertSweetThen, alertSweetToast } from '../../../shared/helpers/sweetalert2';
+import { CreateUpdateComponent } from './create-update/create-update.component';
 
 @Component({
   selector: 'app-roles',
   standalone: true,
-  imports: [CommonModule, LoadComponent, TableModule, SplitButtonModule, DropdownModule, TagModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, LoadComponent, TableModule, SplitButtonModule, DropdownModule, TagModule, CreateUpdateComponent],
   templateUrl: './roles.component.html',
   styleUrl: './roles.component.css'
 })
@@ -22,7 +25,7 @@ export class RolesComponent {
   totalRecords = signal<number>(0);
   selectAll: boolean =false;
   loading:boolean = false;
-  selectClickAccion = {};
+  selectClickAccion: any = {};
   items: MenuItem[] = [
     {
       label: 'Update',
@@ -30,7 +33,6 @@ export class RolesComponent {
       command: () => {
           this.onUpdate();
       },
-      styleClass: 'dropdown-item'
     },
     { separator: true },
     {
@@ -39,9 +41,11 @@ export class RolesComponent {
         command: () => {
             this.onDelete();
         },
-        styleClass: 'dropdown-item'
+        //data-bs-toggle="modal" data-bs-target="#bd-example-modal-xl"
+        
     },
   ]
+  idRole = signal<string>("");
 
   constructor(private roleService: RolesService){}
 
@@ -119,6 +123,7 @@ export class RolesComponent {
   }
 
   onUpdate() {
+    this.idRole.set(this.selectClickAccion._id);
     console.log("Update", this.selectClickAccion)
   }
 
@@ -127,8 +132,14 @@ export class RolesComponent {
   }
 
   onDelete() {
+    alertSweetThen("Are you sure you want to delete this user?")
+    .then((e) => {
+      if(e.isConfirmed == true){
+        console.log("Delete", this.selectClickAccion)
+        alertSweetToast()
+      }
+    })
     // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Deleted' })
-    console.log("Delete", this.selectClickAccion)
   }
 
   formateDate(date: string): string {

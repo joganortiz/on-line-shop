@@ -34,7 +34,7 @@ div#load_pages {
   background: rgb(236, 239, 255);
   opacity: 1;
   position: relative;
-  z-index: 999999;
+  z-index: 1;
   top: 0px;
   bottom: 0;
   left: 0;

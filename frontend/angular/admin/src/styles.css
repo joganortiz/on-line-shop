@@ -2,3 +2,48 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
+
+/* sweetAlert */
+.swal2-html-container {
+    font-size: 0.875rem !important;
+    margin: 1px 1px 1px 5px !important;
+}
+
+.swal2-title {
+    margin: 1px 1px 1px 5px !important;
+}
+
+.swal2-popup.swal2-toast {
+    padding: 5px 10px 10px 10px !important;
+}
+.swal2-container:has(.swal2-modal){
+    background: #343b40e3 !important;
+}
+
+.inputForm label {
+    margin-bottom: 0!important;
+}
+
+/* .swal2-modal {
+    width: 400px !important;
+}
+swal2-container swal2-center swal2-backdrop-show
+swal2-container swal2-top-end swal2-backdrop-show
+
+.swal2-actions > button {
+    padding: 5px 9px 5px 9px !important;
+    font-size: 13px !important;
+}
+
+.swal2-html-container {
+    font-size: 14px !important;
+}
+
+.swal2-icon.swal2-warning {
+    border-color: orange !important;
+    color: orange !important;
+}
+
+.swal2-static {
+    transform: scale(1.02) !important;
+} */
